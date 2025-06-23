@@ -1,7 +1,6 @@
-<article class="card bg-base-200 sm:w-full shadow-sm my-4">
+<article class="card bg-base-200 w-full md:w-md shadow-sm my-4">
     <figure>
-        <img class="hover:transform-stroke"
-            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+        <img class="hover:transform-stroke" src="{{ asset('img/cover.png') }}" alt="Cover" />
     </figure>
     <div class="card-body">
         <h2 class="card-title">Card Title</h2>

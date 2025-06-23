@@ -21,11 +21,14 @@
         <div class="drawer-content ">
             <div class="flex justify-center p-4">
                 <div class="container">
-                    <div class="flex mb-2">
+                    <div class="flex mb-2 justify-between">
+                            @yield('breadcrumbs')
+                        <div class="flex">
+                        <livewire:widgets.search />
                         <label for="main-drawer" class="btn btn-ghost drawer-button lg:hidden">
-                            <i data-lucide="menu"></i>
+                            <x-lucide-menu class="h-7" />
                         </label>
-                        @yield('breadcrumbs')
+                        </div>
                     </div>
                     @yield('content')
                 </div>

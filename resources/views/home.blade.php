@@ -5,8 +5,8 @@
 @section('breadcrumbs')
     <div class="breadcrumbs text-sm">
         <ul>
-            <li class="flex items-center">
-                <i data-lucide="home" class="mr-1 w-4"></i>
+            <li class="flex items-center gap-2">
+                <x-lucide-home class="h-4"/>
                 Accueil
             </li>
         </ul>
@@ -18,6 +18,9 @@
         <h1 class="text-3xl font-bold mb-1">Bienvenue sur YoungBlog</h1>
         <p class="text-base-content/50">Découvrez mes dernières publications.</p>
     </div>
-    <x-post-card />
-    <x-post-card />
+{{--    <livewire:posts-carousel />--}}
+    <div class="w-full flex justify-center gap-10 flex-wrap">
+        <x-post-card />
+        <x-post-card />
+    </div>
 @endsection
