@@ -19,8 +19,8 @@ class CommentFactory extends Factory
     {
         return [
             'content' => $this->faker->paragraph(),
-            'post_id' => null, // This will be set later if needed
-            'author_id' => null, // This will be set later if needed
+            'post_id' => $this->faker->numberBetween(1, 30), // This will be set later if needed
+            'author_id' => $this->faker->numberBetween(1, 20), // This will be set later if needed
             'parent_id' => null, // This will be set later if needed
         ];
     }

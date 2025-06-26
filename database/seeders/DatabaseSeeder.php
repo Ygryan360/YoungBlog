@@ -2,9 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Message;
+use App\Models\NewsletterFollower;
+use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +20,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(20)->create();
+        $superadmin = User::factory()->create([
+            'name' => 'Rayane Tchabodi',
+            'email' => 'ygr@youngblog.tech',
+            'role' => 'superadmin'
+        ]);
+
+        User::factory(30)->create();
+
+        Category::factory(20)->create([
+            'author_id' => $superadmin->id
+        ]);
+        Tag::factory(40)->create([
+            'author_id' => $superadmin->id
+        ]);
+        Post::factory(100)->create([
+            'author_id' => $superadmin->id,
+        ]);
+        Comment::factory(70)->create();
+        NewsletterFollower::factory(100)->create();
+        Message::factory(30)->create();
     }
 }

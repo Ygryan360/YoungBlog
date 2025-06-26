@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +16,8 @@ return new class extends Migration
             $table->string('email');
             $table->text('content');
             $table->boolean('read')->default(false);
-            $table->foreignId('author_id')
+            $table->foreignId('reader_id')
+                ->nullable()
                 ->constrained('users')
                 ->onDelete('cascade');
             $table->timestamps();

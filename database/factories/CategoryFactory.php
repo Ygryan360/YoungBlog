@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends Factory<Category>
  */
 class CategoryFactory extends Factory
 {
@@ -20,7 +21,7 @@ class CategoryFactory extends Factory
             'name' => fake()->unique()->word(),
             'description' => fake()->optional()->sentence(),
             'slug' => fake()->unique()->slug(),
-            'author_id' => null, // This will be set later if needed
+            'author_id' => null,
         ];
     }
 }

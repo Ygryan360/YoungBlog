@@ -3,6 +3,7 @@
 namespace App\Livewire\Widgets;
 
 use App\Models\Post;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class Search extends Component
@@ -16,20 +17,21 @@ class Search extends Component
         return $this->showSearch = !$this->showSearch;
     }
 
-    public function getSearchResults(): mixed
-    {
-        return Post::whereLike('name', '%' . $this->search . '%')
-            ->orWhereLike('content', '%' . $this->search . '%')
-            ->orWhereLike('tags', '%' . $this->search . '%')
-            ->take(10)
-            ->get();
-    }
-
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.widgets.search', [
             'showSearch' => $this->showSearch,
             'searchResults' => $this->search ? $this->getSearchResults() : [],
         ]);
+    }
+
+    public function getSearchResults(): mixed
+    {
+        return Post::minimal()
+            ->published()
+            ->whereLike('title', '%' . $this->search . '%')
+            ->orWhereLike('content', '%' . $this->search . '%')
+            ->take(10)
+            ->get();
     }
 }

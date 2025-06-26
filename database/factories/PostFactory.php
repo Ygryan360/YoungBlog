@@ -24,7 +24,7 @@ class PostFactory extends Factory
             'slug' => $this->faker->unique()->slug(),
             'status' => $this->faker->randomElement(['draft', 'published']),
             'author_id' => null, // This will be set later if needed
-            'category_id' => null, // This will be set later if needed
+            'category_id' => $this->faker->numberBetween(1, 10), // This will be set later if needed
             'image' => $this->faker->imageUrl(640, 480, 'nature', true),
             'published_at' => $this->faker->optional()->dateTimeBetween('-1 year', 'now'),
             'views' => $this->faker->numberBetween(0, 11000)

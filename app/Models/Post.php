@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Database\Factories\PostFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,19 +34,14 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class);
-    }
-
     public function getTagsCountAttribute(): int
     {
         return $this->tags()->count();
     }
 
-    public function comments(): HasMany
+    public function tags(): BelongsToMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->belongsToMany(Tag::class);
     }
 
     public function getCoummentsCountAttribute(): int
@@ -52,8 +49,25 @@ class Post extends Model
         return $this->comments()->count();
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    #[Scope]
+    protected function minimal(Builder $query): void
+    {
+        $query->select(['id', 'title', 'slug', 'description', 'image']);
+    }
+
+    #[Scope]
+    protected function published(Builder $query): void
+    {
+        $query->where('status', 'published');
     }
 }

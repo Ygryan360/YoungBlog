@@ -18,9 +18,6 @@
         <h1 class="text-3xl font-bold mb-1">Bienvenue sur YoungBlog</h1>
         <p class="text-base-content/50">Découvrez mes dernières publications.</p>
     </div>
-{{--    <livewire:posts-carousel />--}}
-    <div class="w-full flex justify-center gap-10 flex-wrap">
-        <x-post-card />
-        <x-post-card />
-    </div>
+    {{--    <livewire:posts-carousel />--}}
+    <livewire:posts-container/>
 @endsection
