@@ -15,14 +15,14 @@ class Tag extends Model
 
     protected $fillable = ['name', 'slug', 'author_id'];
 
-    public function posts(): BelongsToMany
-    {
-        return $this->belongsToMany(Post::class);
-    }
-
     public function getPostsCountAttribute(): int
     {
         return $this->posts()->count();
+    }
+
+    public function posts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class);
     }
 
     public function author(): BelongsTo

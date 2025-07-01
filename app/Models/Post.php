@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -28,6 +29,11 @@ class Post extends Model
         'published_at',
         'description',
     ];
+
+    public function getImageUrl(): string
+    {
+        return $this->image ? Storage::disk('public')->url($this->image) : asset('img/cover.png');
+    }
 
     public function category(): BelongsTo
     {

@@ -15,14 +15,14 @@ class Category extends Model
 
     protected $fillable = ['name', 'description', 'slug', 'author_id'];
 
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
-
     public function getPostsCountAttribute(): int
     {
         return $this->posts()->count();
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
     }
 
     public function author(): BelongsTo

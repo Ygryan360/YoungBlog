@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TagPolicy
 {
@@ -13,7 +12,7 @@ class TagPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +20,7 @@ class TagPolicy
      */
     public function view(User $user, Tag $tag): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +28,7 @@ class TagPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->isAdminOrAuthor() || $user->isSuperAdmin();
     }
 
     /**
@@ -37,7 +36,7 @@ class TagPolicy
      */
     public function update(User $user, Tag $tag): bool
     {
-        return false;
+        return ($user->isAdmin() || $user->isSuperAdmin()) || ($user->id === $tag->author_id && $user->isAuthor());
     }
 
     /**
@@ -45,7 +44,7 @@ class TagPolicy
      */
     public function delete(User $user, Tag $tag): bool
     {
-        return false;
+        return ($user->isAdmin() || $user->isSuperAdmin()) || ($user->id === $tag->author_id && $user->isAuthor());
     }
 
     /**
@@ -53,7 +52,7 @@ class TagPolicy
      */
     public function restore(User $user, Tag $tag): bool
     {
-        return false;
+        return $user->isAdmin() || $user->isSuperAdmin();
     }
 
     /**
@@ -61,6 +60,6 @@ class TagPolicy
      */
     public function forceDelete(User $user, Tag $tag): bool
     {
-        return false;
+        return $user->isSuperAdmin();
     }
 }

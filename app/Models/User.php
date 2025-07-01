@@ -4,12 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -28,7 +32,6 @@ class User extends Authenticatable
         'password',
         'email_verified_at'
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -38,6 +41,26 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdminOrAuthor() || $this->isSuperAdmin();
+    }
+
+    public function isAdminOrAuthor(): bool
+    {
+        return $this->role === 'admin' || $this->role === 'author';
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'superadmin';
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return Storage::disk('public')->url($this->avatar_url);
+    }
 
     public function getCategoriesCountAttribute(): int
     {
@@ -67,6 +90,16 @@ class User extends Authenticatable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isAuthor(): bool
+    {
+        return $this->role === 'author';
     }
 
     /**

@@ -3,7 +3,7 @@
         <x-lucide-search class="h-6"/>
     </button>
     @if($showSearch)
-        <div class="h-screen w-screen fixed top-0 left-0 backdrop-blur-md bg-base-100/30 z-50 pt-10 flex
+        <div class="h-screen w-screen fixed top-0 left-0 backdrop-blur-md bg-black/50 z-50 pt-10 flex
         justify-center">
             <label>
                 <x-lucide-x class="h-6 absolute top-8 right-8 cursor-pointer" wire:click="toggleShowSearch"/>

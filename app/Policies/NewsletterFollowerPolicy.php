@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\NewsletterFollower;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class NewsletterFollowerPolicy
 {
@@ -13,7 +12,7 @@ class NewsletterFollowerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->isSuperAdmin() || $user->isAdmin();
     }
 
     /**
@@ -21,7 +20,7 @@ class NewsletterFollowerPolicy
      */
     public function view(User $user, NewsletterFollower $newsletterFollower): bool
     {
-        return false;
+        return $user->isSuperAdmin() || $user->isAdmin();
     }
 
     /**
@@ -29,7 +28,7 @@ class NewsletterFollowerPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->isSuperAdmin() || $user->isAdmin();
     }
 
     /**
@@ -37,7 +36,7 @@ class NewsletterFollowerPolicy
      */
     public function update(User $user, NewsletterFollower $newsletterFollower): bool
     {
-        return false;
+        return $user->isSuperAdmin() || $user->isAdmin();
     }
 
     /**
@@ -45,7 +44,7 @@ class NewsletterFollowerPolicy
      */
     public function delete(User $user, NewsletterFollower $newsletterFollower): bool
     {
-        return false;
+        return $user->isSuperAdmin() || $user->isAdmin();
     }
 
     /**
@@ -53,7 +52,7 @@ class NewsletterFollowerPolicy
      */
     public function restore(User $user, NewsletterFollower $newsletterFollower): bool
     {
-        return false;
+        return $user->isAdmin() || $user->isSuperAdmin();
     }
 
     /**
@@ -61,6 +60,6 @@ class NewsletterFollowerPolicy
      */
     public function forceDelete(User $user, NewsletterFollower $newsletterFollower): bool
     {
-        return false;
+        return $user->isSuperAdmin();
     }
 }

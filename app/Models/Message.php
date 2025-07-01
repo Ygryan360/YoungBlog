@@ -18,4 +18,9 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'reader_id');
     }
+
+    public function markAsRead(): void
+    {
+        $this->update(['read' => true, 'reader_id' => auth()->id()]);
+    }
 }
