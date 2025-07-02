@@ -13,7 +13,7 @@ class Tag extends Model
     /** @use HasFactory<TagFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'author_id'];
+    protected $fillable = ['name', 'author_id'];
 
     public function getPostsCountAttribute(): int
     {

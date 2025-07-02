@@ -14,6 +14,7 @@ class PostController extends Controller
         if ($post->status !== 'published') {
             abort(404);
         }
+        $post->update(['views' => $post->views + 1]);
         return view('post', compact('post'));
     }
 
@@ -35,9 +36,9 @@ class PostController extends Controller
         return view('category', compact('posts', 'category'));
     }
 
-    public function tag(string $slug): View
+    public function tag(string $name): View
     {
-        $tag = Tag::where('slug', $slug)->firstOrFail();
+        $tag = Tag::where('name', $name)->firstOrFail();
         $posts = $tag->posts()
             ->published()
             ->paginate(10);

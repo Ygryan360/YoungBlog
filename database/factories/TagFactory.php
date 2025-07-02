@@ -19,7 +19,6 @@ class TagFactory extends Factory
     {
         return [
             'name' => fake()->unique()->word(),
-            'slug' => fake()->unique()->slug(),
             'author_id' => null, // This will be set later if needed
         ];
     }

@@ -49,19 +49,19 @@ html {
     scroll-behavior: smooth;
 }
 
-.post-content > h1 {
+.post-content h1 {
     @apply text-3xl font-bold mt-6 mb-4 text-primary;
 }
-.post-content > h2 {
+.post-content h2 {
     @apply text-2xl font-bold mt-6 mb-3 text-primary;
 }
-.post-content > h3 {
+.post-content h3 {
     @apply text-2xl font-semibold mt-5 mb-2 text-primary;
 }
-.post-content > h4 {
+.post-content h4 {
     @apply text-xl font-semibold mt-4 mb-2 text-primary;
 }
-.post-content > p {
+.post-content p {
     @apply my-2 text-justify;
 }
 .post-content > pre {
@@ -70,7 +70,7 @@ html {
 .post-content > pre > code {
     @apply ml-6;
 }
-.post-content > p > code {
+.post-content code {
     @apply bg-base-300 text-white/80 py-[2px] px-1;
 }
 .post-content > blockquote {
@@ -80,10 +80,10 @@ html {
     @apply text-primary hover:underline;
 }
 .post-content img {
-    @apply w-full h-auto my-4 rounded;
+    @apply max-w-full h-auto my-4 rounded;
 }
 .post-content ul {
-    @apply list-disc pl-5 my-2;
+    @apply list-disc pl-5 my-4;
 }
 .post-content ol {
     @apply list-decimal pl-5 my-2;

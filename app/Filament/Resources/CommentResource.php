@@ -16,6 +16,7 @@ class CommentResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
     protected static ?string $navigationGroup = 'Blog';
     protected static ?string $navigationLabel = 'Commentaires';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

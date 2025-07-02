@@ -16,6 +16,7 @@ class NewsletterFollowerResource extends Resource
     protected static ?string $navigationGroup = 'Communauté';
     protected static ?string $navigationLabel = 'Abonnés';
     protected static ?string $navigationIcon = 'heroicon-o-inbox';
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {

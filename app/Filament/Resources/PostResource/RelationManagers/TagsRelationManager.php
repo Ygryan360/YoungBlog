@@ -22,6 +22,13 @@ class TagsRelationManager extends RelationManager
             ]);
     }
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['author_id'] = auth()->id();
+
+        return $data;
+    }
+
     public function table(Table $table): Table
     {
         return $table

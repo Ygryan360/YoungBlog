@@ -59,7 +59,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return Storage::disk('public')->url($this->avatar_url);
+        return $this->avatar_url ? Storage::disk('public')->url($this->avatar_url) : null;
     }
 
     public function getCategoriesCountAttribute(): int

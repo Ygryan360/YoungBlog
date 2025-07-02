@@ -16,6 +16,7 @@ class MessageResource extends Resource
     protected static ?string $model = Message::class;
     protected static ?string $navigationGroup = 'Communauté';
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
@@ -105,5 +106,10 @@ class MessageResource extends Resource
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

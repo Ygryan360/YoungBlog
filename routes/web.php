@@ -9,8 +9,8 @@ Route::view('about', 'about')->name('about');
 Route::get('/category/{slug}', [PostController::class, 'category'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('posts.category');
-Route::get('/tag/{slug}', [PostController::class, 'tag'])
-    ->where('slug', '[a-z0-9\-]+')
+Route::get('/tag/{name}', [PostController::class, 'tag'])
+    ->where('name', '[a-z0-9\-]+')
     ->name('posts.tag');
 Route::get('/posts/{slug}-{post}', [PostController::class, 'show'])
     ->where('slug', '[a-z0-9\-]+')
