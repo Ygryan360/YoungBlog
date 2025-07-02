@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Parsedown;
 
 class Post extends Model
 {
@@ -33,6 +34,15 @@ class Post extends Model
     public function getImageUrl(): string
     {
         return $this->image ? Storage::disk('public')->url($this->image) : asset('img/cover.png');
+    }
+
+    public function parsedContent(): string
+    {
+        $parsedown = new Parsedown();
+        $parsedown->setSafeMode(true);
+        $parsedown->setBreaksEnabled(true);
+
+        return $parsedown->text($this->content);
     }
 
     public function category(): BelongsTo

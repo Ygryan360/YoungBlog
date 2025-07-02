@@ -18,7 +18,8 @@
                 <span class="text-sm">{{ $post->created_at->format('d M Y') }}</span>
             </div>
         </div>
-        <a href="{{ route('posts.show', ['slug' => $post->slug, 'post' => $post->id]) }}" class="card-title text-white">
+        <a href="{{ route('posts.show', ['slug' => $post->slug, 'post' => $post->id]) }}"
+            class="card-title text-white text-xl">
             {{ $post->title }}
         </a>
         <p class="text-base-content">{{ $post->description }}</p>
