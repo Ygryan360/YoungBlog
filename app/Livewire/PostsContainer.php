@@ -10,7 +10,7 @@ class PostsContainer extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'simple-tailwind';
+    protected $paginationTheme = 'tailwind';
 
     public function render()
     {

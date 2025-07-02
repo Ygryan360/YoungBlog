@@ -1,6 +1,6 @@
 <div>
-    <h4 class="mb-2 italic text-center text-base-content/80">
-        Suivez-moi sur les réseaux sociaux ;-)
+    <h4 class="mb-2 text-sm italic text-center text-base-content/80">
+        :-) Suivez-moi sur les réseaux sociaux...
     </h4>
     <div class="flex justify-center gap-3">
         <a href="https://www.facebook.com/ryan.tchabodi" target="_blank" rel="noopener noreferrer" title="Facebook">
