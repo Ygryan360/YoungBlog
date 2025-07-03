@@ -29,4 +29,9 @@ class Category extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function route(): string
+    {
+        return route('posts.category', $this->slug);
+    }
 }

@@ -36,6 +36,11 @@ class Post extends Model
         return $this->image ? Storage::disk('public')->url($this->image) : asset('img/cover.png');
     }
 
+    public function route(): string
+    {
+        return route('posts.show', ['slug' => $this->slug, 'post' => $this->id]);
+    }
+
     public function parsedContent(): string
     {
         $parsedown = new Parsedown();

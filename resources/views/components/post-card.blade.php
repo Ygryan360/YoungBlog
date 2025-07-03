@@ -18,7 +18,7 @@
                 <span class="text-sm">{{ $post->created_at->format('d M Y') }}</span>
             </div>
         </div>
-        <a href="{{ route('posts.show', ['slug' => $post->slug, 'post' => $post->id]) }}"
+        <a href="{{ $post->route() }}"
             class="card-title text-white text-xl">
             {{ $post->title }}
         </a>
@@ -30,7 +30,7 @@
             @endforeach
         </div>
         <div class="card-actions mt-2">
-            <a href="{{ route('posts.show', ['slug' => $post->slug, 'post' => $post->id]) }}" class="btn btn-primary">
+            <a href="{{ $post->route() }}" class="btn btn-primary">
                 Lire l'article
             </a>
         </div>

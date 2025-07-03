@@ -15,6 +15,11 @@ class Tag extends Model
 
     protected $fillable = ['name', 'author_id'];
 
+    public function route(): string
+    {
+        return route('posts.tag', $this->name);
+    }
+
     public function getPostsCountAttribute(): int
     {
         return $this->posts()->count();

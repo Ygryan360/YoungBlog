@@ -11,7 +11,7 @@
             </li>
             <li class="flex items-center gap-2">
                 <x-lucide-square-menu class="h-4" />
-                <a href="{{ route('posts.category', $post->category->slug) }}">{{ $post->category->name }}</a>
+                <a href="{{ $post->category->route() }}">{{ $post->category->name }}</a>
             </li>
             <li>
                 {{ $post->title }}
@@ -22,7 +22,7 @@
 
 @section('content')
     <div class="mb-8 border-b border-base-200 pb-4">
-        <h1 class="text-3xl font-bold mb-1">{{ $post->title }}</h1>
+        <h1 class="text-3xl font-bold mb-1 text-white">{{ $post->title }}</h1>
         <p>Publié le <span class="text-white">{{ $post->created_at->format('d M Y') }}</span> par <span
                 class="text-white">{{ $post->author->name }}</span>
         </p>
@@ -42,7 +42,7 @@
                     <h4 class="text-lg font-semibold">Tags :</h4>
                     <div class="ml-4">
                         @foreach ($post->tags as $tag)
-                            <a href="{{ route('posts.tag', $tag->slug) }}" class="badge badge-outline mr-2">
+                            <a href="{{ $tag->route() }}" class="badge badge-outline mr-2">
                                 {{ $tag->name }}
                             </a>
                         @endforeach
