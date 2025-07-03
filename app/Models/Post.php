@@ -83,7 +83,16 @@ class Post extends Model
     #[Scope]
     protected function minimal(Builder $query): void
     {
-        $query->select(['id', 'title', 'slug', 'description', 'image']);
+        $query->select([
+            'id',
+            'title',
+            'slug',
+            'description',
+            'image',
+            'author_id',
+            'category_id',
+            'created_at'
+        ]);
     }
 
     #[Scope]

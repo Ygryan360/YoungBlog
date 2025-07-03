@@ -16,16 +16,31 @@
                 <div class="mt-4">
                     @if($search)
                         @if($searchResults->isEmpty())
-                            <p class="text-base-content/50">Aucun résultat trouvé.</p>
+                            <p>Aucun résultat trouvé.</p>
                         @else
                             <h2 class="text-lg font-semibold mb-2">Résultats pour "{{ $search }}"</h2>
-                            <ul class="list-disc pl-5">
-                                @foreach($searchResults as $result)
-                                    <li class="mb-1">
-                                        <h3 class="font-bold">{{$result->title}}</h3>
-                                    </li>
-                                @endforeach
-                            </ul>
+                            <div class="overflow-x-auto">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <x-lucide-menu-square class="h-4 text-primary" />
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($searchResults as $result)
+                                                <tr class="mb-1 flex gap-4">
+                                                    <th class="text-primary font-normal">{{$result->category->name}}</th>
+                                                    <td class="font-bold">
+                                                        <a href="{{ $result->route() }}" class="hover:underline">{{$result->title}}</a>                                                        
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                </table>
+                            </div>
                         @endif
                     @else
                         <p class="text-base-content/50 text-center">Commencez à taper pour rechercher des articles.</p>

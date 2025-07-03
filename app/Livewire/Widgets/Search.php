@@ -31,7 +31,8 @@ class Search extends Component
             ->published()
             ->whereLike('title', '%' . $this->search . '%')
             ->orWhereLike('content', '%' . $this->search . '%')
-            ->take(10)
+            ->with(['category'])
+            ->take(5)
             ->get();
     }
 }

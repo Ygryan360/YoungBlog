@@ -15,7 +15,8 @@ class PostsContainer extends Component
     public function render()
     {
         return view('livewire.posts-container', [
-            'posts' => Post::published()
+            'posts' => Post::minimal()
+                ->published()
                 ->with(['author', 'category'])
                 ->latest()
                 ->paginate(10),
