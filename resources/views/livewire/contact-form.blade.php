@@ -3,7 +3,9 @@
         <div class="flex gap-4 w-full flex-col md:flex-row">
             <div class="w-full">
                 <label class="input w-full">
-                    <span class="label">Nom :</span>
+                    <span class="label">
+                        <x-lucide-user class="h-4" />
+                    </span>
                     <input type="text" placeholder="Jaques Edoh" wire:model="name" />
                 </label>
                 @error('name')
@@ -14,8 +16,10 @@
             </div>
             <div class="w-full gap-2">
                 <label class="input w-full">
-                    <span class="label">Email :</span>
-                    <input type="email" id="email" wire:model="email">
+                    <span class="label">
+                        <x-lucide-mail class="h-4" />
+                    </span>
+                    <input type="email" id="email" wire:model="email" placeholder="mail@site.com"/>
                 </label>
                 @error('email') 
                     <span class="text-sm text-error flex items-center gap-2 mt-4">
@@ -39,11 +43,8 @@
             @enderror
         </div>
         <button type="submit" class="btn btn-primary w-full">Envoyer</button>
-        @if (session()->has('message'))
-            <div role="alert" class="alert alert-success">
-                <x-lucide-mail-check class="h-4" />
-                <span>{{ session('message') }}</span>
-            </div>
-        @endif
+        <x-flash-message>
+            <x-lucide-mail-check class="h-4" />
+        </x-flash-message>
     </form>
 </div>

@@ -18,6 +18,9 @@
         <h1 class="text-3xl font-bold mb-1 text-white">Bienvenue sur YoungBlog</h1>
         <p>Découvrez mes dernières publications.</p>
     </div>
+    <x-flash-message>
+        <x-lucide-circle-check class="h-4" />
+    </x-flash-message>
     {{--    <livewire:posts-carousel /> --}}
     <livewire:posts-container />
 @endsection
