@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -62,6 +63,7 @@ class PostResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->image()
+                            ->directory('posts')
                             ->imageEditor()
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('description')
@@ -97,13 +99,12 @@ class PostResource extends Resource
                     ->label('Catégorie')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\SelectColumn::make('status')
                     ->label('Statut')
-                    ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'draft' => 'info',
-                        'published' => 'success',
-                    })
+                    ->options([
+                        'published' => 'Publié',
+                        'draft' => 'Brouillon',
+                    ])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('views')
                     ->label('Vues')
@@ -121,7 +122,9 @@ class PostResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Filter::make('status')
+                    ->label('Publiés')
+                    ->query(fn($query) => $query->where('status', 'published')),
             ])
             ->actions([
                 Action::make('preview')
