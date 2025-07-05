@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use App\Models\NewsletterFollower;
 
 class PostController extends Controller
 {
@@ -44,5 +46,30 @@ class PostController extends Controller
             ->paginate(10);
 
         return view('tag', compact('posts', 'tag'));
+    }
+
+    public function newsletter(Request $request)
+    {
+        $message = '';
+
+        $email = $request->input('email');
+        $token = $request->input('token');
+
+        $subscriber = NewsletterFollower::where('email', $email)
+            ->where('token', $token)
+            ->first();
+
+        if ($subscriber) {
+
+            $subscriber->update(['verified' => true, 'token' => null]);
+            $subscriber->save();
+
+            $message = "Merci pour votre abonnement à la newsletter de YoungBlog. Vous recevrez bientôt nos dernières actualités et articles directement dans votre boîte de réception.";
+
+        } else {
+            $message = "Aucun abonnement trouvé pour cette adresse e-mail.";
+        }
+
+        return redirect()->route('home')->with('message', $message);
     }
 }

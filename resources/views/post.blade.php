@@ -36,7 +36,7 @@
             <article class="post-content mb-8 pb-6 border-b border-base-200">
                 {!! $post->parsedContent() !!}
             </article>
-            <div class="my-6">
+            <div class="my-16">
                 <div class="flex items-center">
                     <x-lucide-tags class="h-8 text-primary inline-block mr-2" />
                     <h4 class="text-lg font-semibold">Tags :</h4>
@@ -49,6 +49,7 @@
                     </div>
                 </div>
             </div>
+            <livewire:newsletter-form/>
         </div>
     </div>
 @endsection
