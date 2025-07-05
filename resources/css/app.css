@@ -50,16 +50,16 @@ html {
 }
 
 .post-content h1 {
-    @apply text-3xl font-bold mt-6 mb-4 text-primary;
+    @apply text-3xl font-bold mt-8 mb-4 text-primary;
 }
 .post-content h2 {
-    @apply text-2xl font-bold mt-6 mb-3 text-primary;
+    @apply text-2xl font-bold mt-8 mb-3 text-primary;
 }
 .post-content h3 {
-    @apply text-2xl font-semibold mt-5 mb-2 text-primary;
+    @apply text-2xl font-semibold mt-6 mb-2 text-primary;
 }
 .post-content h4 {
-    @apply text-xl font-semibold mt-4 mb-2 text-primary;
+    @apply text-xl font-semibold mt-5 mb-2 text-primary;
 }
 .post-content p {
     @apply my-2 text-justify;
