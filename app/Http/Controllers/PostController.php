@@ -28,14 +28,15 @@ class PostController extends Controller
         abort(403);
     }
 
-    public function category(string $slug): View
+    public function category(string $slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $posts = $category->posts()
-            ->published()
-            ->paginate(10);
+        return abort(404);
+        // $category = Category::where('slug', $slug)->firstOrFail();
+        // $posts = $category->posts()
+        //     ->published()
+        //     ->paginate(10);
 
-        return view('category', compact('posts', 'category'));
+        // return view('category', compact('posts', 'category'));
     }
 
     public function tag(string $name): View
