@@ -1,5 +1,5 @@
 <div class="w-full flex justify-center">
-    <form wire:submit.prevent="submit" class="max-w-xl flex flex-col gap-4">
+    <form wire:submit.prevent="submit" class="w-full md:max-w-xl flex flex-col gap-4">
         <div class="flex gap-4 w-full flex-col md:flex-row">
             <div class="w-full">
                 <label class="input w-full">

@@ -19,7 +19,7 @@
             </div>
         </div>
         <a href="{{ $post->route() }}"
-            class="card-title text-white text-2xl">
+            class="card-title font-extrabold text-white text-2xl/7">
             {{ $post->title }}
         </a>
         <p class="text-base-content">{{ $post->description }}</p>

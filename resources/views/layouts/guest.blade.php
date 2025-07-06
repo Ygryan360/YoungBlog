@@ -19,11 +19,11 @@
     <div class="drawer lg:drawer-open">
         <input id="main-drawer" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content ">
-            <div class="flex justify-center p-4 min-h-screen">
+            <div class="flex lg:block justify-center p-4 min-h-screen">
                 <div class="container">
-                    <div class="flex mb-2 justify-between">
+                    <div class="flex flex-col-reverse lg:flex-row mb-2 justify-between">
                         @yield('breadcrumbs')
-                        <div class="flex">
+                        <div class="flex justify-end">
                             <livewire:widgets.search />
                             <label for="main-drawer" class="btn btn-ghost drawer-button lg:hidden">
                                 <x-lucide-menu class="h-7" />

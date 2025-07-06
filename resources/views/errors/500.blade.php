@@ -9,7 +9,7 @@
     </div>
     <div class="flex flex-col items-center justify-center">
         <x-illustrations.500 class="w-1/3 mb-8"/>
-        <p class="text-lg mb-8">
+        <p class="text-lg mb-8 text-center">
             Il semble que quelque chose se soit mal passé sur notre serveur.
         </p>
         <a href="{{ route('home') }}" class="btn btn-primary">Retourner à l'accueil</a>

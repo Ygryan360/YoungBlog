@@ -9,7 +9,7 @@
     </div>
     <div class="flex flex-col items-center justify-center">
         <x-illustrations.404 class="w-1/3 mb-8"/>
-        <p class="text-lg mb-8">
+        <p class="text-lg mb-8 text-center">
             Il semble que la page que vous cherchez n'existe pas ou a été déplacée.
         </p>
         <a href="{{ route('home') }}" class="btn btn-primary">Retourner à l'accueil</a>
