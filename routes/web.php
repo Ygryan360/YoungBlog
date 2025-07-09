@@ -15,7 +15,7 @@ Route::get('/tag/{name}', [PostController::class, 'tag'])
     ->where('name', '[a-z0-9\-]+')
     ->name('posts.tag');
 
-Route::get('/posts/{slug}-{post}', [PostController::class, 'show'])
+Route::get('/articles/{slug}-{post}', [PostController::class, 'show'])
     ->where('slug', '[a-z0-9\-]+')
     ->where('post', '[0-9]+')
     ->name('posts.show');
