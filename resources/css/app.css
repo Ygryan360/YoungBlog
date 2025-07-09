@@ -70,7 +70,7 @@ html {
 .post-content > pre > code {
     @apply ml-6;
 }
-.post-content code {
+.post-content code:not(pre > code) {
     @apply bg-base-300 text-white/80 py-[2px] px-1;
 }
 .post-content > blockquote {
