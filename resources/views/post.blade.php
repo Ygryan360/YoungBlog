@@ -30,16 +30,17 @@
     <div class="flex justify-center mb-8">
         <div class="max-w-4xl">
             @if ($post->image)
-                <img class="w-full h-auto mb-4 rounded shadow-lg" src="{{ $post->getImageUrl() }}"
-                    alt="{{ $post->title }}">
+            <img class="w-full h-auto my-4 rounded shadow-lg" src="{{ $post->getImageUrl() }}"
+            alt="{{ $post->title }}">
             @endif
             <article class="post-content mb-8 pb-6 border-b border-base-200">
                 {!! $post->parsedContent() !!}
             </article>
-            <div class="my-16">
+            <x-share-links :url="$post->route()" :title="$post->title"/>
+            <div class="my-8">
                 <div class="flex items-center">
-                    <x-lucide-tags class="h-8 text-primary inline-block mr-2" />
-                    <h4 class="text-lg font-semibold">Tags :</h4>
+                    <x-lucide-tags class="h-6 text-primary inline-block mr-2" />
+                    <h4 class="text-white font-semibold">Tags :</h4>
                     <div class="ml-4">
                         @foreach ($post->tags as $tag)
                             <a href="{{ $tag->route() }}" class="badge badge-outline mr-2">
