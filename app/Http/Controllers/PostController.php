@@ -39,14 +39,15 @@ class PostController extends Controller
         // return view('category', compact('posts', 'category'));
     }
 
-    public function tag(string $name): View
+    public function tag(string $name)/** : View **/
     {
-        $tag = Tag::where('name', $name)->firstOrFail();
-        $posts = $tag->posts()
-            ->published()
-            ->paginate(10);
+        return abort(404);
+        // $tag = Tag::where('name', $name)->firstOrFail();
+        // $posts = $tag->posts()
+        //     ->published()
+        //     ->paginate(10);
 
-        return view('tag', compact('posts', 'tag'));
+        // return view('tag', compact('posts', 'tag'));
     }
 
     public function newsletter(Request $request)
