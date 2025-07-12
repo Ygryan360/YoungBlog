@@ -30,13 +30,13 @@
     <div class="flex justify-center mb-8">
         <div class="max-w-4xl">
             @if ($post->image)
-            <img class="w-full h-auto my-4 rounded shadow-lg" src="{{ $post->getImageUrl() }}"
-            alt="{{ $post->title }}">
+                <img class="w-full h-auto my-4 rounded shadow-lg" src="{{ $post->getImageUrl() }}"
+                    alt="{{ $post->title }}">
             @endif
-            <article class="post-content mb-8 pb-6 border-b border-base-200">
+            <article class="post-content bg-base-100/50 mb-8 pb-6 border-b border-base-200">
                 {!! $post->parsedContent() !!}
             </article>
-            <x-share-links :url="$post->route()" :title="$post->title"/>
+            <x-share-links :url="$post->route()" :title="$post->title" />
             <div class="my-8">
                 <div class="flex items-center">
                     <x-lucide-tags class="h-6 text-primary inline-block mr-2" />
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <livewire:newsletter-form/>
+            <livewire:newsletter-form />
         </div>
     </div>
 @endsection

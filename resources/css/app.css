@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 @plugin "daisyui";
 @plugin "daisyui/theme" {
     name: "black";
@@ -35,18 +34,39 @@
     --depth: 0;
     --noise: 0;
 }
-
+@theme {
+    --font-sans: "Inter", sans-serif;
+}
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-@theme {
-    --font-sans: "Inter", sans-serif;
-}
-
 html {
     scroll-behavior: smooth;
+}
+
+.drawer-content {
+    background: radial-gradient(
+            circle,
+            transparent 20%,
+            #000000 20%,
+            #000000 80%,
+            transparent 80%,
+            transparent
+        ),
+        radial-gradient(
+                circle,
+                transparent 20%,
+                #000000 20%,
+                #000000 80%,
+                transparent 80%,
+                transparent
+            )
+            65px 65px,
+        linear-gradient(#0e0d00 5.2px, transparent 5.2px) 0 -2.6px,
+        linear-gradient(90deg, #0e0d00 5.2px, #000000 5.2px) -2.6px 0;
+    background-size: 130px 130px, 130px 130px, 65px 65px, 65px 65px;
 }
 
 .post-content h1 {

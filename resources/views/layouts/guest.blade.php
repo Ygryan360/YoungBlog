@@ -18,7 +18,7 @@
 <body class="font-sans antialiased">
     <div class="drawer lg:drawer-open">
         <input id="main-drawer" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content ">
+        <div class="drawer-content">
             <div class="flex lg:block justify-center p-4 min-h-screen">
                 <div class="container">
                     <div class="flex flex-col-reverse lg:flex-row mb-2 justify-between">
