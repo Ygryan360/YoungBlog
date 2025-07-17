@@ -15,12 +15,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased h-screen w-full flex">
-    <section class="w-1/2 flex items-center justify-center p-8">
+<body class="font-sans antialiased h-screen w-full flex flex-col md:flex-row">
+    <section class="w-full md:w-1/2 h-screen flex items-center justify-center p-8">
         @yield('content')
     </section>
-    <section class="w-1/2 bg-base-200 border-base-300 border p-4">
-
+    <section
+        class="w-full md:w-1/2 h-screen bg-base-200 border-base-300 border p-4 flex flex-col items-center justify-center">
+        <img src="{{ asset('img/logo.svg') }}" alt="YoungBlog Logo" class="w-34 mb-8">
+        <img src="{{ asset('img/sign-up.svg') }}" alt="Se connecter" class="w-1/2">
     </section>
 </body>
 
