@@ -15,7 +15,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 });
 
-Route::get('/verify-email', [AuthController::class, 'verifyEmail'])
+Route::view('verify-email', 'auth.verify-email')
     ->name('verification.show');
 
 Route::post('/verify-email', [AuthController::class, 'sendVerificationEmail'])

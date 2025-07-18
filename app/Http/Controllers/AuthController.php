@@ -43,7 +43,19 @@ class AuthController extends Controller
         ]);
 
         return redirect()->route('verification.show')->with('success', 'Inscription réussie !');
+    }
 
+    public function sendVerificationEmail(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')->withErrors(['email' => 'Vous devez être connecté pour envoyer un e-mail de vérification.']);
+        }
+
+        // Logic to send verification email with $user->verification_code
+
+        return redirect()->back()->with('success', 'E-mail de vérification envoyé !');
     }
 
     public function logout(Request $request): RedirectResponse
