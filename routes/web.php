@@ -7,11 +7,19 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'home')->name('home');
 Route::view('contact', 'contact')->name('contact');
 Route::view('about', 'about')->name('about');
-Route::view('/login', 'auth.login')->name('login');
-Route::view('register', 'auth.register')->name('register');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::middleware('guest')->group(function () {
+    Route::view('login', 'auth.login')->name('login');
+    Route::view('register', 'auth.register')->name('register');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+});
+
+Route::get('/verify-email', [AuthController::class, 'verifyEmail'])
+    ->name('verification.show');
+
+Route::post('/verify-email', [AuthController::class, 'sendVerificationEmail'])
+    ->name('verification.send');
 
 Route::get('/category/{slug}', [PostController::class, 'category'])
     ->where('slug', '[a-z0-9\-]+')
@@ -33,4 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/preview/{post}', [PostController::class, 'preview'])
         ->where('slug', '[a-z0-9\-]+')
         ->name('posts.preview');
+
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
