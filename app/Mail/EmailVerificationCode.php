@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,9 +17,9 @@ class EmailVerificationCode extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(int $verificationCode)
+    public function __construct(User $user)
     {
-        $this->verificationCode = $verificationCode;
+        $this->user = $user;
     }
 
     /**
@@ -27,7 +28,7 @@ class EmailVerificationCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Email Verification Code',
+            subject: 'Code de vérification d\'email',
         );
     }
 

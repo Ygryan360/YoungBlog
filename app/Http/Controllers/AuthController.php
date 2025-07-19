@@ -6,7 +6,11 @@ use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Mail;
+use App\Mail\VerificationEmail;
 
 class AuthController extends Controller
 {
@@ -42,10 +46,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('verification.show')->with('success', 'Inscription réussie !');
+        Mail::to($user->email)->send(new VerificationEmail($user));
+
+        return redirect()->route('verification.confirm')->with('success', 'Inscription réussie !');
     }
 
-    public function sendVerificationEmail(Request $request): RedirectResponse
+    public function confirmEmail(Request $request): View|RedirectResponse
     {
         $user = Auth::user();
 
@@ -53,9 +59,14 @@ class AuthController extends Controller
             return redirect()->route('login')->withErrors(['email' => 'Vous devez être connecté pour envoyer un e-mail de vérification.']);
         }
 
-        // Logic to send verification email with $user->verification_code
+        if ($request->input('email') === $user->email && $request->input('code') === $user->verification_code) {
+            $user->update(['verification_code' => null, 'email_verified_at' => now()]);
+            $user->save();
 
-        return redirect()->back()->with('success', 'E-mail de vérification envoyé !');
+            return redirect()->route('home')->with('success', 'E-mail vérfié avec succès !');
+        }
+
+        return view('auth.verify-email');
     }
 
     public function logout(Request $request): RedirectResponse

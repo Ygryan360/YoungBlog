@@ -15,12 +15,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 });
 
-Route::view('verify-email', 'auth.verify-email')
-    ->name('verification.show');
-
-Route::post('/verify-email', [AuthController::class, 'sendVerificationEmail'])
-    ->name('verification.send');
-
 Route::get('/category/{slug}', [PostController::class, 'category'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('posts.category');
@@ -41,6 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/preview/{post}', [PostController::class, 'preview'])
         ->where('slug', '[a-z0-9\-]+')
         ->name('posts.preview');
+
+    Route::get('/verify-email', [AuthController::class, 'confirmEmail'])
+        ->name('verification.confirm');
+    Route::post('/verify-email', [AuthController::class, 'sendVerificationEmail'])
+        ->name('verification.send');
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
