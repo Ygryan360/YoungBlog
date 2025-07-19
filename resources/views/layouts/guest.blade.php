@@ -5,11 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <title>YoungBlog - @yield('title', 'Accueil')</title>
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:200,300,400,500,600,700,800" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=rubik:300,400,500,600,700,800" rel="stylesheet" />
+    <title>YoungBlog - @yield('title', 'Accueil')</title>
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
