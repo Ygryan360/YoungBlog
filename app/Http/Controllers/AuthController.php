@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailVerificationCode;
 use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Mail;
@@ -46,7 +46,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Mail::to($user->email)->send(new VerificationEmail($user));
+        Mail::to($user->email)->send(new EmailVerificationCode($user));
+
+        Auth::login($user);
 
         return redirect()->route('verification.confirm')->with('success', 'Inscription réussie !');
     }
@@ -57,13 +59,6 @@ class AuthController extends Controller
 
         if (!$user) {
             return redirect()->route('login')->withErrors(['email' => 'Vous devez être connecté pour envoyer un e-mail de vérification.']);
-        }
-
-        if ($request->input('email') === $user->email && $request->input('code') === $user->verification_code) {
-            $user->update(['verification_code' => null, 'email_verified_at' => now()]);
-            $user->save();
-
-            return redirect()->route('home')->with('success', 'E-mail vérfié avec succès !');
         }
 
         return view('auth.verify-email');

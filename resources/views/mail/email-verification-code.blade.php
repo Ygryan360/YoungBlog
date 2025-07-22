@@ -1,16 +1,13 @@
 <x-mail::message>
     # Vérification de l'email
 
+    Bonjour {{ $user->name }},
     Votre code de vérification est :
 
     <x-mail::panel>
-        {{ $verificationCode }}
+        {{ $user->verification_code }}
     </x-mail::panel>
 
-    <x-mail::button :url="''">
-        Vérifier l'email
-    </x-mail::button>
-
-    Thanks,<br>
+    Merci,<br>
     {{ config('app.name') }}
 </x-mail::message>
