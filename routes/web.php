@@ -36,10 +36,10 @@ Route::middleware('auth')->group(function () {
         ->where('slug', '[a-z0-9\-]+')
         ->name('posts.preview');
 
-    Route::get('/verify-email', [AuthController::class, 'confirmEmail'])
+    Route::get('/verify-email', [AuthController::class, 'showConfirmEmailForm'])
+        ->name('verification.show');
+    Route::post('/verify-email', [AuthController::class, 'confirmEmail'])
         ->name('verification.confirm');
-    Route::post('/verify-email', [AuthController::class, 'sendVerificationEmail'])
-        ->name('verification.send');
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });

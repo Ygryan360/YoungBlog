@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Mail\EmailVerificationCode;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use Mail;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -114,5 +116,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function sendEmailVerificationCode()
+    {
+        $verificationCode = rand(100000, 999999);
+        $this->verification_code = $verificationCode;
+        $this->save();
+        Mail::to($this->email)->send(new EmailVerificationCode($this));
     }
 }
