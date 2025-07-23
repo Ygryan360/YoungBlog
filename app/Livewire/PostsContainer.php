@@ -12,6 +12,15 @@ class PostsContainer extends Component
 
     protected $paginationTheme = 'tailwind';
 
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="flex items-center justify-center h-full w-full">
+            <span class="loading loading-bars loading-xl"></span>
+        </div>
+        HTML;
+    }
+
     public function render()
     {
         return view('livewire.posts-container', [

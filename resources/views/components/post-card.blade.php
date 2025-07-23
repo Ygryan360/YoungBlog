@@ -18,8 +18,7 @@
                 <span class="text-sm">{{ $post->created_at->format('d M Y') }}</span>
             </div>
         </div>
-        <a href="{{ $post->route() }}"
-            class="card-title font-extrabold text-white text-2xl/7">
+        <a href="{{ $post->route() }}" class="card-title font-extrabold text-white text-2xl/7">
             {{ $post->title }}
         </a>
         <p class="text-base-content">{{ $post->description }}</p>

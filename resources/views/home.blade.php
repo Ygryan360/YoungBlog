@@ -21,6 +21,5 @@
     <x-flash-message>
         <x-lucide-circle-check class="h-4" />
     </x-flash-message>
-    {{--    <livewire:posts-carousel /> --}}
-    <livewire:posts-container />
+    <livewire:posts-container lazy />
 @endsection
