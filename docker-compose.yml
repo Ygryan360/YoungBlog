@@ -1,0 +1,68 @@
+services:
+    app:
+        image: shinsenter/laravel:latest
+        container_name: laravel_app
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www/html
+        environment:
+            APP_ENV: local
+            APP_DEBUG: true
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: laravel
+            DB_USERNAME: laravel
+            DB_PASSWORD: secret
+        depends_on:
+            db:
+                condition: service_healthy
+
+    db:
+        image: mysql:8
+        container_name: laravel_db
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "mysqladmin",
+                    "ping",
+                    "-h",
+                    "127.0.0.1",
+                    "-uroot",
+                    "-proot",
+                ]
+            interval: 5s
+            retries: 10
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: laravel_phpmyadmin
+        environment:
+            PMA_HOST: db
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "8080:80"
+        depends_on:
+            - db
+
+    bun:
+        image: oven/bun:latest
+        container_name: laravel_bun
+        working_dir: /var/www/html
+        volumes:
+            - .:/var/www/html
+        command: sh -c "bun install && bun run build"
+
+volumes:
+    db_data:
