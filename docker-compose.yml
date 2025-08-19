@@ -3,7 +3,7 @@ services:
         image: shinsenter/laravel:latest
         container_name: laravel_app
         ports:
-            - "8000:80"
+            - "${B_PORT}:80"
         volumes:
             - .:/var/www/html
         environment:
@@ -52,7 +52,7 @@ services:
             PMA_HOST: db
             MYSQL_ROOT_PASSWORD: root
         ports:
-            - "8080:80"
+            - "${PHPMA_PORT}:80"
         depends_on:
             - db
 
