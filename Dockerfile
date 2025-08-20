@@ -45,10 +45,8 @@ COPY --from=assets /app/public/build ./public/build
 
 RUN mkdir -p storage bootstrap/cache && chown -R ${WWW_USER}:${WWW_USER} storage bootstrap/cache && chmod -R ug+rwX storage/bootstrap/cache 2>/dev/null || true && chmod -R ug+rwX storage bootstrap/cache
 
-USER ${WWW_USER}
-
 RUN if [ -f artisan ]; then grep -q '^APP_KEY=' .env 2>/dev/null || php artisan key:generate --ansi || true; fi
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+USER ${WWW_USER}
