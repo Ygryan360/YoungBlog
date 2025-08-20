@@ -39,8 +39,11 @@ RUN apt-get update && apt-get install -y \
   default-mysql-client
 
 # Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-  && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip curl intl
+RUN apt-get update && apt-get install -y \
+  git curl libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libpq-dev libzip-dev libcurl4-openssl-dev libicu-dev zip unzip default-mysql-client \
+  && rm -rf /var/lib/apt/lists/* \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install pdo pdo_mysql mbstring pcntl gd zip intl
 
 # Copy vhost config
 COPY vhost.conf /etc/apache2/sites-available/000-default.conf
