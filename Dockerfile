@@ -1,19 +1,3 @@
-# --- Assets build (Bun) stage ---
-FROM oven/bun:1 AS assets
-
-WORKDIR /app
-
-COPY package.json bun.lockb* ./
-
-RUN if [ -f package.json ]; then bun install || true; else echo "[assets] No package.json, skipping bun install"; fi
-
-COPY resources/ resources/
-COPY vite.config.js ./
-
-RUN if [ -f package.json ]; then bun run build || echo "[assets] Build failed/skipped"; fi
-
-
-# ------------ PHP + Apache ---------
 FROM php:8.4-apache AS server
 
 WORKDIR /app
@@ -41,11 +25,17 @@ COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 # Get Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy assets build
-COPY --from=assets /app/public/build ./public/build
+RUN curl -fsSL https://bun.sh/install | bash
 
 # Permissions : tout appartient à www-data (utilisateur d’Apache par défaut)
 RUN chown -R www-data:www-data /app
+
+RUN composer install --no-interaction --prefer-dist --no-progress || true && \
+  php artisan key:generate && \
+  php artisan migrate && \
+  php artisan optimize
+
+RUN bun install && bun run build
 
 # Expose port
 EXPOSE 80
