@@ -1,7 +1,7 @@
 services:
     app:
         image: shinsenter/laravel:latest
-        container_name: laravel_app
+        container_name: main_app
         ports:
             - "${B_PORT}:80"
         volumes:
@@ -45,7 +45,7 @@ services:
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: laravel_phpmyadmin
+        container_name: main_phpmyadmin
         environment:
             PMA_HOST: db
             MYSQL_ROOT_PASSWORD: root
@@ -56,7 +56,7 @@ services:
 
     bun:
         image: oven/bun:latest
-        container_name: laravel_bun
+        container_name: main_bun
         working_dir: /var/www/html
         volumes:
             - .:/var/www/html
