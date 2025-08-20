@@ -3,68 +3,47 @@ FROM oven/bun:1 AS assets
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json bun.lockb* ./
 
 RUN if [ -f package.json ]; then bun install || true; else echo "[assets] No package.json, skipping bun install"; fi
 
 COPY resources/ resources/
-
 COPY vite.config.js ./
 
 RUN if [ -f package.json ]; then bun run build || echo "[assets] Build failed/skipped"; fi
 
 
-# ------------ PHP ---------
+# ------------ PHP + Apache ---------
 FROM php:8.4-apache AS server
 
-ARG WWW_USER=1000
-
-# Set working directory
-WORKDIR /app
+WORKDIR /var/www/html
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-  git \
-  curl \
-  libpng-dev \
-  libjpeg-dev \
-  libfreetype6-dev \
-  libonig-dev \
-  libxml2-dev \
-  libpq-dev \
-  libzip-dev \
-  libcurl4-openssl-dev \
-  zip \
-  unzip \
-  default-mysql-client
+  git curl unzip zip \
+  libpng-dev libjpeg-dev libfreetype6-dev \
+  libonig-dev libxml2-dev libpq-dev libzip-dev libcurl4-openssl-dev libicu-dev default-mysql-client \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN apt-get update && apt-get install -y \
-  git curl libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libpq-dev libzip-dev libcurl4-openssl-dev libicu-dev zip unzip default-mysql-client \
-  && rm -rf /var/lib/apt/lists/* \
-  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   && docker-php-ext-install pdo pdo_mysql mbstring pcntl gd zip intl
-
-# Copy vhost config
-COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Enable Apache mods
 RUN a2enmod rewrite
 
-# Get latest Composer
+# Copy vhost config
+COPY vhost.conf /etc/apache2/sites-available/000-default.conf
+
+# Get Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Copy assets build
 COPY --from=assets /app/public/build ./public/build
 
-# Create user
-RUN groupadd --force -g $WWW_USER webapp
-RUN useradd -ms /bin/bash --no-user-group -g $WWW_USER -u $WWW_USER webapp
+# Permissions : tout appartient à www-data (utilisateur d’Apache par défaut)
+RUN chown -R www-data:www-data /var/www/html
 
-# Clean cache
-RUN apt-get -y autoremove \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
+# Expose port
 EXPOSE 80
 
-USER ${WWW_USER}
