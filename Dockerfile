@@ -25,7 +25,8 @@ COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 # Get Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN curl -fsSL https://bun.sh/install | bash
+# Get Bun
+COPY --from=oven/bun:latest /usr/local/bin/bun /usr/bin/bun
 
 # Permissions : tout appartient à www-data (utilisateur d’Apache par défaut)
 RUN chown -R www-data:www-data /app
