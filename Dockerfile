@@ -1,85 +1,54 @@
-FROM php:8.3-apache AS base
-
-ARG WWW_USER=1000
-
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public \
-  COMPOSER_ALLOW_SUPERUSER=1 \
-  PHP_MEMORY_LIMIT=512M \
-  PHP_OPCACHE_VALIDATE_TIMESTAMPS=1 \
-  PHP_OPCACHE_MAX_ACCELERATED_FILES=20000 \
-  PHP_OPCACHE_MEMORY_CONSUMPTION=192 \
-  PHP_OPCACHE_INTERNED_STRINGS_BUFFER=16
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  git unzip zip curl pkg-config mariadb-client gosu \
-  libpng-dev libjpeg-dev libfreetype6-dev \
-  libzip-dev libicu-dev libxml2-dev libonig-dev libcurl4-openssl-dev \
-  && docker-php-ext-configure gd --with-freetype --with-jpeg \
-  && docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring bcmath gd zip intl opcache \
-  && a2enmod rewrite headers \
-  && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf /etc/apache2/conf-available/*.conf \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www/html
-
-FROM base AS vendor-production
-
-WORKDIR /var/www/html
-
-COPY composer.json composer.lock* ./
-
-RUN composer install --no-interaction --prefer-dist --no-dev --no-scripts --no-progress --classmap-authoritative
-
-FROM base AS vendor-development
-WORKDIR /var/www/html
-COPY composer.json composer.lock* ./
-RUN composer install --no-interaction --prefer-dist --no-scripts --no-progress
-
+# --- Assets build (Bun) stage ---
 FROM oven/bun:1 AS assets
+
 WORKDIR /app
 
 COPY package.json ./
-RUN if [ -f package.json ]; then bun install; else echo "No package.json, skipping bun install"; fi
+
+RUN if [ -f package.json ]; then bun install || true; else echo "[assets] No package.json, skipping bun install"; fi
 
 COPY resources/ resources/
+
 COPY vite.config.js ./
-RUN if [ -f package.json ]; then bun run build || echo "Asset build failed/ skipped"; fi
 
-FROM base AS runtime
+RUN if [ -f package.json ]; then bun run build || echo "[assets] Build failed/skipped"; fi
 
-ARG APP_ENV=local
 
-ENV APP_ENV=${APP_ENV}
+# --- Final runtime stage ---
+FROM php:8.4-apache AS final
 
-WORKDIR /var/www/html
+ARG WWW_USER=1000
+
+WORKDIR /app
+
+ENV COMPOSER_ALLOW_SUPERUSER=1 APACHE_DOCUMENT_ROOT=/app/public
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+RUN apt-get update && apt-get install -y \
+  git curl libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libpq-dev libzip-dev libcurl4-openssl-dev libicu-dev zip unzip default-mysql-client \
+  && rm -rf /var/lib/apt/lists/* \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install pdo pdo_mysql mbstring pcntl gd zip intl \
+  && a2enmod rewrite headers \
+  && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf /etc/apache2/conf-available/*.conf
+
+RUN groupadd --force -g ${WWW_USER} webapp && id -u ${WWW_USER} 2>/dev/null || useradd -ms /bin/bash --no-user-group -g ${WWW_USER} -u ${WWW_USER} webapp
+
+COPY composer.json composer.lock* ./
+
+RUN composer install --no-interaction --prefer-dist --no-progress || true
 
 COPY . .
 
-RUN if [ "$APP_ENV" = "production" ]; then echo "Using production vendors"; fi
-COPY --from=vendor-production /var/www/html/vendor /tmp/vendor-production
-COPY --from=vendor-development /var/www/html/vendor /tmp/vendor-development
-RUN if [ "$APP_ENV" = "production" ]; then mv /tmp/vendor-production vendor && rm -rf /tmp/vendor-development; else mv /tmp/vendor-development vendor && rm -rf /tmp/vendor-production; fi
-
-RUN if [ "$APP_ENV" = "production" ]; then \
-  composer dump-autoload --optimize --no-dev && php artisan package:discover --ansi; \
-  else \
-  composer dump-autoload && (php artisan package:discover --ansi || true); \
-  fi
-
 COPY --from=assets /app/public/build ./public/build
 
-RUN mkdir -p storage bootstrap/cache \
-  && chown -R www-data:www-data storage bootstrap/cache \
-  && usermod -u ${WWW_USER} www-data && groupmod -g ${WWW_USER} www-data || true
+RUN mkdir -p storage bootstrap/cache && chown -R ${WWW_USER}:${WWW_USER} storage bootstrap/cache && chmod -R ug+rwX storage/bootstrap/cache 2>/dev/null || true && chmod -R ug+rwX storage bootstrap/cache
 
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost/ || exit 1
+USER ${WWW_USER}
+
+RUN if [ -f artisan ]; then grep -q '^APP_KEY=' .env 2>/dev/null || php artisan key:generate --ansi || true; fi
 
 EXPOSE 80
 
-COPY docker/entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
