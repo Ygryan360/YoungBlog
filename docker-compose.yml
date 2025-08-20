@@ -7,7 +7,7 @@ services:
                 APP_ENV: locale
         container_name: youngblog_app
         ports:
-            - "8000:80"
+            - "${MAIN_APP_PORT}:80"
         environment:
             APP_ENV: locale
             APP_DEBUG: "true"
@@ -41,7 +41,7 @@ services:
             MYSQL_USER: youngbloguser
             MYSQL_PASSWORD: secret
         ports:
-            - "3306:3306"
+            - "${MAIN_DB_PORT}:3306"
         volumes:
             - db_data:/var/lib/mysql
         healthcheck:
@@ -66,7 +66,7 @@ services:
             PMA_HOST: db
             MYSQL_ROOT_PASSWORD: root
         ports:
-            - "8080:80"
+            - "${MAIN_PMA_PORT}:80"
         depends_on:
             - db
         profiles: [locale]
