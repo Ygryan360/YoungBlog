@@ -14,38 +14,53 @@ COPY vite.config.js ./
 RUN if [ -f package.json ]; then bun run build || echo "[assets] Build failed/skipped"; fi
 
 
-# --- Final runtime stage ---
-FROM php:8.4-apache AS final
+# ------------ PHP ---------
+FROM php:8.4-apache AS server
 
 ARG WWW_USER=1000
 
+# Set working directory
 WORKDIR /app
 
-ENV COMPOSER_ALLOW_SUPERUSER=1 APACHE_DOCUMENT_ROOT=/app/public
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-  git curl libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libpq-dev libzip-dev libcurl4-openssl-dev libicu-dev zip unzip default-mysql-client \
-  && rm -rf /var/lib/apt/lists/* \
-  && docker-php-ext-configure gd --with-freetype --with-jpeg \
-  && docker-php-ext-install pdo pdo_mysql mbstring pcntl gd zip intl \
-  && a2enmod rewrite headers \
-  && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf /etc/apache2/conf-available/*.conf
+  git \
+  curl \
+  libpng-dev \
+  libjpeg-dev \
+  libfreetype6-dev \
+  libonig-dev \
+  libxml2-dev \
+  libpq-dev \
+  libzip-dev \
+  libcurl4-openssl-dev \
+  zip \
+  unzip \
+  default-mysql-client
 
-RUN groupadd --force -g ${WWW_USER} webapp && id -u ${WWW_USER} 2>/dev/null || useradd -ms /bin/bash --no-user-group -g ${WWW_USER} -u ${WWW_USER} webapp
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip curl intl
 
-COPY composer.json composer.lock* ./
+# Copy vhost config
+COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
-RUN composer install --no-interaction --prefer-dist --no-progress || true
+# Enable Apache mods
+RUN a2enmod rewrite
 
-COPY . .
+# Get latest Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY --from=assets /app/public/build ./public/build
 
-RUN mkdir -p storage bootstrap/cache && chown -R ${WWW_USER}:${WWW_USER} storage bootstrap/cache && chmod -R ug+rwX storage/bootstrap/cache 2>/dev/null || true && chmod -R ug+rwX storage bootstrap/cache
+# Create user
+RUN groupadd --force -g $WWW_USER webapp
+RUN useradd -ms /bin/bash --no-user-group -g $WWW_USER -u $WWW_USER webapp
 
-RUN if [ -f artisan ]; then grep -q '^APP_KEY=' .env 2>/dev/null || php artisan key:generate --ansi || true; fi
+# Clean cache
+RUN apt-get -y autoremove \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 80
 
