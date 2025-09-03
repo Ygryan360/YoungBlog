@@ -49,7 +49,7 @@ class PostResource extends Resource
                     ->createOptionUsing(function (string $name) {
                         return Tag::create([
                             'name' => $name,
-                            'user_id' => auth()->id(),
+                            'author_id' => auth()->id(),
                             'slug' => Str::slug($name),
                         ])->id;
                     }),

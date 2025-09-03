@@ -33,7 +33,7 @@ class UserResource extends Resource
                 Forms\Components\Select::make('role')
                     ->options(fn() => collect(\App\Enums\UserRole::cases())->mapWithKeys(fn($c) => [$c->value => $c->label()])->toArray())
                     ->native(false)
-                    ->disabled(fn($record) => $record->role === \App\Enums\UserRole::Superadmin)
+                    ->disabled(fn($record) => isset($record) && $record->role === \App\Enums\UserRole::Superadmin)
             ]);
     }
 
@@ -49,11 +49,12 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn($state): string => match (is_object($state) && $state instanceof \BackedEnum ? $state->value : $state) {
                         \App\Enums\UserRole::User->value => 'gray',
                         \App\Enums\UserRole::Author->value => 'info',
                         \App\Enums\UserRole::Admin->value => 'warning',
                         \App\Enums\UserRole::Superadmin->value => 'danger',
+                        default => 'secondary',
                     })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
