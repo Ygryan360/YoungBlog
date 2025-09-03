@@ -14,7 +14,7 @@ class EditUser extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                ->disabled(fn($record) => $record->role === 'superadmin'),
+                ->disabled(fn($record) => $record->role === \App\Enums\UserRole::Superadmin),
         ];
     }
 }

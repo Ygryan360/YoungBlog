@@ -31,13 +31,9 @@ class UserResource extends Resource
                     ->disabled()
                     ->label('Avatar'),
                 Forms\Components\Select::make('role')
-                    ->options([
-                        'user' => 'User',
-                        'author' => 'Author',
-                        'admin' => 'Admin',
-                    ])
+                    ->options(fn() => collect(\App\Enums\UserRole::cases())->mapWithKeys(fn($c) => [$c->value => $c->label()])->toArray())
                     ->native(false)
-                    ->disabled(fn($record) => $record->role === 'superadmin')
+                    ->disabled(fn($record) => $record->role === \App\Enums\UserRole::Superadmin)
             ]);
     }
 
@@ -54,10 +50,10 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('role')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
-                        'user' => 'gray',
-                        'author' => 'info',
-                        'admin' => 'warning',
-                        'superadmin' => 'danger',
+                        \App\Enums\UserRole::User->value => 'gray',
+                        \App\Enums\UserRole::Author->value => 'info',
+                        \App\Enums\UserRole::Admin->value => 'warning',
+                        \App\Enums\UserRole::Superadmin->value => 'danger',
                     })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
