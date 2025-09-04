@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 use Livewire\Component;
 
 class PostComments extends Component
@@ -34,17 +33,28 @@ class PostComments extends Component
   public function placeholder()
   {
     return <<<'HTML'
-        <div class="flex items-center justify-center h-full w-full">
-            <span class="loading loading-bars loading-xl"></span>
+        <div class="mt-8">
+          <h3 class="text-2xl font-bold mb-4 text-white">Commentaires</h3>
+          <div class="flex flex-col">
+            <div class="flex w-full flex-col gap-4">
+              <div class="flex items-center gap-4">
+                <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                <div class="flex flex-col gap-4">
+                  <div class="skeleton h-4 w-40"></div>
+                  <div class="skeleton h-4 w-20"></div>
+                </div>
+              </div>
+              <div class="skeleton h-32 w-full"></div>
+            </div>
+          </div>
         </div>
         HTML;
   }
 
-  public function submit(?int $parentId = null): void
+  public function submit(?int $parentId = null)
   {
     if (!auth()->check()) {
-      $this->dispatchBrowserEvent('redirect-to-login', ['url' => route('login')]);
-      return;
+      return redirect()->route('login');
     }
 
     $content = $parentId ? ($this->replyText[$parentId] ?? '') : $this->newComment;
@@ -52,10 +62,10 @@ class PostComments extends Component
     \Illuminate\Support\Facades\Validator::make([
       'content' => $content,
     ], [
-      'content' => 'required|string|min:3|max:2000',
+      'content' => ['required', 'string', 'min:3', 'max:2000'],
     ])->validate();
 
-    $comment = Comment::create([
+    Comment::create([
       'content' => $content,
       'parent_id' => $parentId,
       'post_id' => $this->post->id,
@@ -67,6 +77,7 @@ class PostComments extends Component
     } else {
       $this->newComment = '';
     }
+
     $this->replyTo = null;
 
     session()->flash('success', 'Commentaire ajouté.');

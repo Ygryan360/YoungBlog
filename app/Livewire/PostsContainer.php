@@ -15,8 +15,10 @@ class PostsContainer extends Component
     public function placeholder()
     {
         return <<<'HTML'
-        <div class="flex items-center justify-center h-full w-full">
-            <span class="loading loading-bars loading-xl"></span>
+        <div class="flex w-full mb-10 h-full items-center gap-10 flex-wrap justify-center">
+            <div class="skeleton h-80 w-70"></div>
+            <div class="skeleton h-80 w-70"></div>
+            <div class="skeleton h-80 w-70"></div>
         </div>
         HTML;
     }
