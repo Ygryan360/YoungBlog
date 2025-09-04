@@ -48,45 +48,28 @@ html {
     scroll-behavior: smooth;
 }
 
-/* ******* *
- * Patern  *
- * ********* */
-.drawer-content {
-    background: radial-gradient(
-            circle,
-            transparent 20%,
-            #000000 20%,
-            #000000 80%,
-            transparent 80%,
-            transparent
-        ),
-        radial-gradient(
-                circle,
-                transparent 20%,
-                #000000 20%,
-                #000000 80%,
-                transparent 80%,
-                transparent
-            )
-            65px 65px,
-        linear-gradient(#0e0d00 5.2px, transparent 5.2px) 0 -2.6px,
-        linear-gradient(90deg, #0e0d00 5.2px, #000000 5.2px) -2.6px 0;
-    background-size: 130px 130px, 130px 130px, 65px 65px, 65px 65px;
-}
-
 /* ***************** *
  * Markdown styles   *
  * ***************** */
+.post-content hr {
+    @apply border-base-content/50 mb-4;
+}
 .post-content h1 {
-    @apply text-3xl font-bold mt-8 mb-4 text-primary;
+    @apply text-6xl font-bold mt-8 mb-4 text-primary;
 }
 .post-content h2 {
-    @apply text-2xl font-bold mt-8 mb-3 text-primary;
+    @apply text-5xl font-bold mt-8 mb-3 text-primary;
 }
 .post-content h3 {
-    @apply text-2xl font-semibold mt-6 mb-2 text-primary;
+    @apply text-4xl font-semibold mt-6 mb-2 text-primary;
 }
 .post-content h4 {
+    @apply text-3xl font-semibold mt-5 mb-2 text-primary;
+}
+.post-content h5 {
+    @apply text-2xl font-semibold mt-5 mb-2 text-primary;
+}
+.post-content h6 {
     @apply text-xl font-semibold mt-5 mb-2 text-primary;
 }
 .post-content p {
@@ -96,13 +79,13 @@ html {
     @apply mockup-code w-full my-4 bg-[#1a1b26];
 }
 .post-content > pre > code {
-    @apply ml-6;
+    @apply ml-2;
 }
 .post-content code:not(pre > code) {
-    @apply bg-base-300 text-white/80 py-[2px] px-1;
+    @apply bg-base-content/30 text-white/90 rounded py-0.5 px-1 mx-1;
 }
 .post-content > blockquote {
-    @apply border-l-4 border-primary bg-base-200 p-4 my-4 italic;
+    @apply border-l-4 border-primary bg-base-300 p-4 my-4 italic;
 }
 .post-content a {
     @apply text-primary hover:underline;
