@@ -30,27 +30,32 @@
     <div class="flex justify-center mb-8">
         <div class="max-w-4xl">
             @if ($post->image)
-                <img class="w-full h-auto my-4 rounded shadow-lg" src="{{ $post->getImageUrl() }}"
-                    alt="{{ $post->title }}">
+                <img class="w-full h-auto mt-4" src="{{ $post->getImageUrl() }}" alt="{{ $post->title }}">
             @endif
-            <article class="post-content bg-base-100/50 mb-8 pb-6 border-b border-base-200">
+            <div class="my-8">
+                <x-share-links :url="$post->route()" :title="$post->title" />
+            </div>
+            <article class="post-content bg-base-200/50 mb-8 py-6 px-4">
                 {!! $post->parsedContent() !!}
             </article>
-            <x-share-links :url="$post->route()" :title="$post->title" />
             <div class="my-8">
-                <div class="flex items-center">
-                    <x-lucide-tags class="h-6 text-primary inline-block mr-2" />
-                    <h4 class="text-white font-semibold">Tags :</h4>
-                    <div class="ml-4">
-                        @foreach ($post->tags as $tag)
-                            <a href="{{ $tag->route() }}" class="badge badge-outline mr-2">
-                                {{ $tag->name }}
-                            </a>
-                        @endforeach
+                <div class="bg-base-200/50 py-8 px-4">
+                    <div class="flex items-center mb-8">
+                        <h3 class="text-white text-2xl font-semibold">
+                            <x-lucide-tags class="h-6 text-primary inline-block mr-2" />
+                            Tags :
+                        </h3>
+                        <div class="ml-4">
+                            @foreach ($post->tags as $tag)
+                                <a href="{{ $tag->route() }}" class="badge badge-outline mr-2">
+                                    {{ $tag->name }}
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
+                    <livewire:post-comments :post="$post" lazy />
                 </div>
             </div>
-            <livewire:newsletter-form />
         </div>
     </div>
 @endsection
