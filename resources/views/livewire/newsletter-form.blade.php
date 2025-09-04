@@ -1,7 +1,6 @@
 <div class="w-full pt-8 text-center border-t border-base-200">
     <h3 class="text-xl font-bold mb-2 text-white">Abonnez-vous à la newsletter</h3>
     <p class="mb-4 max-w-xl mx-auto">
-        Cet article vous a plu ? <br>
         Abonnez-vous à la newsletter pour recevoir les 
         dernières nouvelles et mises à jour directement 
         dans votre boîte de réception.
