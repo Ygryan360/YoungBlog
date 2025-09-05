@@ -2,12 +2,13 @@
 @section('title', 'Vérification de l\'email')
 @section('content')
     <div class="text-center">
-        <h1 class="text-4xl font-bold mb-4 text-white">Vérification de l'email :</h1>
+        <h1 class="text-4xl font-bold mb-4 text-white">Vérification de l'email</h1>
 
         <p class="mb-4">
             Veuillez entrer le code qui vous a été envoyé par email pour vérifier votre adresse. Si vous n'avez pas reçu
             l'email, vous pouvez le renvoyer.
         </p>
+
         <div class="w-full flex flex-col justify-center items-center gap-4">
             <form method="post">
                 @csrf
@@ -22,6 +23,7 @@
                     <button type="submit" class="btn btn-primary">Vérifier</button>
                 </fieldset>
             </form>
+
             <livewire:send-verification-email />
         </div>
     </div>
