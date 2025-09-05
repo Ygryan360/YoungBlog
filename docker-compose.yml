@@ -1,0 +1,17 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: youngblog_app
+        ports:
+            - "8080:80"
+        volumes:
+            - ./:/app:cached
+            - storage_data:/app/storage
+        env_file:
+            - .env
+        restart: unless-stopped
+
+volumes:
+    storage_data:
