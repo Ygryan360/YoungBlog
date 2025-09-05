@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Mail;
+use App\Enums\UserRole;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -52,12 +53,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function isAdminOrAuthor(): bool
     {
-        return $this->role === 'admin' || $this->role === 'author';
+        return $this->role === UserRole::Admin || $this->role === UserRole::Author;
     }
 
     public function isSuperAdmin(): bool
     {
-        return $this->role === 'superadmin';
+        return $this->role === UserRole::Superadmin;
     }
 
     public function getFilamentAvatarUrl(): ?string
@@ -97,26 +98,19 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === UserRole::Admin;
     }
 
     public function isAuthor(): bool
     {
-        return $this->role === 'author';
+        return $this->role === UserRole::Author;
     }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'role' => UserRole::class,
+    ];
 
     public function sendEmailVerificationCode()
     {

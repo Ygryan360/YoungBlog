@@ -24,7 +24,7 @@ class TagResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->unique()
+                    ->unique(ignorable: fn($record) => $record)
                     ->minLength(2)
                     ->columnSpanFull()
                     ->maxLength(32),

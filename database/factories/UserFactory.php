@@ -27,7 +27,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'role' => fake()->randomElement(['admin', 'author', 'user']),
+            'role' => fake()->randomElement([\App\Enums\UserRole::Admin->value, \App\Enums\UserRole::Author->value, \App\Enums\UserRole::User->value]),
             'username' => fake()->unique()->userName(),
             'avatar_url' => null,
             'email_verified_at' => now(),

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $superadmin = User::factory()->create([
             'name' => 'Rayane Tchabodi',
             'email' => 'ygr@youngblog.tech',
-            'role' => 'superadmin'
+            'role' => \App\Enums\UserRole::Superadmin->value
         ]);
 
         User::factory(30)->create();

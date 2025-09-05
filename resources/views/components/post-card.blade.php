@@ -1,6 +1,6 @@
 @props(['post'])
 
-<article class="card bg-base-200 w-full md:w-md shadow-sm my-4">
+<article class="card bg-base-300 w-full md:w-md shadow-sm my-4">
     <figure>
         <a class="overflow-hidden" href="{{ route('posts.show', ['slug' => $post->slug, 'post' => $post->id]) }}">
             <img class="transition-transform duration-300 ease-in-out hover:scale-105 w-full h-auto"

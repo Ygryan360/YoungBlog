@@ -33,7 +33,13 @@ class Post extends Model
 
     public function getImageUrl(): string
     {
-        return $this->image ? Storage::disk('public')->url($this->image) : asset('img/cover.png');
+        if (!$this->image) {
+            return asset('img/cover.png');
+        }
+
+        return Storage::disk('public')->exists($this->image)
+            ? Storage::url($this->image)
+            : asset('img/cover.png');
     }
 
     public function route(): string
@@ -65,11 +71,6 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function getCoummentsCountAttribute(): int
-    {
-        return $this->comments()->count();
-    }
-
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
@@ -91,7 +92,7 @@ class Post extends Model
             'image',
             'author_id',
             'category_id',
-            'created_at'
+            'created_at',
         ]);
     }
 
@@ -99,5 +100,10 @@ class Post extends Model
     protected function published(Builder $query): void
     {
         $query->where('status', 'published');
+    }
+
+    public function getCommentsCountAttribute(): int
+    {
+        return $this->comments()->count();
     }
 }

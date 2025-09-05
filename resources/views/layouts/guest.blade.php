@@ -16,7 +16,7 @@
 <body class="font-sans antialiased">
     <div class="drawer lg:drawer-open">
         <input id="main-drawer" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content">
+        <div class="drawer-content bg-base-200">
             <div class="flex lg:block justify-center p-4 min-h-screen">
                 <div class="container">
                     <div class="flex flex-col-reverse lg:flex-row mb-2 justify-between">
@@ -35,7 +35,7 @@
         </div>
         <div class="drawer-side">
             <label for="main-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="bg-base-200 text-base-content min-h-full w-70 px-4 py-8 flex flex-col justify-between">
+            <div class="text-base-content min-h-full w-70 px-4 py-8 flex flex-col justify-between">
                 <a href="/" title="Retour à l'accueil">
                     <img src="{{ asset('img/logo.svg') }}" alt="YoungBlog Logo" class=" w-34 mx-auto">
                 </a>

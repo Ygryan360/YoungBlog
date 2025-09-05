@@ -15,7 +15,7 @@ Artisan::command('create-ygr', function () {
         'name' => 'Rayane Tchabodi',
         'username' => 'ygryan360',
         'password' => Hash::make('password'),
-        'role' => 'superadmin',
+        'role' => \App\Enums\UserRole::Superadmin->value,
     ]);
     $this->comment("L'utilisateur SuperAdmin a été créé !");
 })->purpose('Créer un utilisateur superadmin');
