@@ -44,6 +44,10 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+* {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(35% 0 0) oklch(15% 0 0);
+}
 html {
     scroll-behavior: smooth;
 }
