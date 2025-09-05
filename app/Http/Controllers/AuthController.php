@@ -21,9 +21,8 @@ class AuthController extends Controller
             return redirect()->intended();
         }
 
-        return redirect()->back()->withErrors([
-            'email' => 'Les identifiants fournis sont incorrects.',
-        ])->withInput();
+        return redirect()->back()->withErrors(['email' => 'Les identifiants fournis sont incorrects.',])
+            ->withInput();
     }
 
     public function register(Request $request): RedirectResponse
@@ -35,6 +34,7 @@ class AuthController extends Controller
         ]);
 
         $username = explode('@', $request->email)[0] . rand(1000, 9999);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -55,6 +55,8 @@ class AuthController extends Controller
 
         if (!$user) {
             return redirect()->route('login')->withErrors(['email' => 'Vous devez être connecté pour envoyer un e-mail de vérification.']);
+        } elseif ($user->hasVerifiedEmail()) {
+            return redirect()->route('home')->with('success', 'Votre e-mail est déjà vérifié.');
         }
 
         return view('auth.verify-email');

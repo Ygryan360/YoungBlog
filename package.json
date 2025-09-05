@@ -16,6 +16,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@fontsource-variable/rubik": "^5.2.6",
     "highlight.js": "^11.11.1"
   },
   "trustedDependencies": [
