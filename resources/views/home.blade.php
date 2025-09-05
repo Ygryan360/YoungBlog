@@ -6,8 +6,8 @@
     <div class="breadcrumbs text-sm">
         <ul>
             <li class="flex items-center gap-2">
-                <x-lucide-home class="h-4" />
-                Accueil
+                <x-lucide-home class="h-4 w-4 inline-block" />
+                <span>Accueil</span>
             </li>
         </ul>
     </div>
