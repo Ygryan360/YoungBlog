@@ -38,12 +38,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/verify-email', [AuthController::class, 'showConfirmEmailForm'])
         ->name('verification.show');
+
     Route::post('/verify-email', [AuthController::class, 'confirmEmail'])
         ->name('verification.confirm');
 
+    Route::view('profile', 'auth.profile')->name('profile');
+
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::post('/articles/{post}/comments', [\App\Http\Controllers\CommentController::class, 'store'])
         ->name('comments.store');
+
     Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])
         ->name('comments.destroy');
 });
