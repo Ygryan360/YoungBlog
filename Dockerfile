@@ -1,4 +1,4 @@
-FROM php:8.4-apache AS server
+FROM php:8.3-apache AS server
 
 WORKDIR /app
 
@@ -26,13 +26,6 @@ RUN chown -R www-data:www-data /app
 # Copy entrypoint script and make executable
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-RUN composer install --no-interaction --prefer-dist --no-progress || true && \
-  php artisan key:generate && \
-  php artisan migrate && \
-  php artisan optimize
-
-RUN bun install && bun run build
 
 EXPOSE 80
 
