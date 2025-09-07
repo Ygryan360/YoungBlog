@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName('Young Blog')
-            ->brandLogo(asset('img/logo.svg'))
+            ->brandLogo(asset('img/logo-ygr.png'))
             ->brandLogoHeight('40px')
             ->login()
             ->sidebarCollapsibleOnDesktop()
