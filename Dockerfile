@@ -34,8 +34,8 @@ RUN curl -Ls https://github.com/ncopa/su-exec/archive/master.tar.gz | tar xz \
   && cd .. \
   && rm -rf su-exec-master
 
-# Copy composer files
-COPY composer.json composer.lock* ./
+# Copy composer and npm files and artisan
+COPY composer.json composer.lock* package.json artisan ./
 
 # Install PHP dependencies
 RUN if [ -f composer.lock ]; then \
@@ -44,8 +44,14 @@ RUN if [ -f composer.lock ]; then \
       composer install --no-dev --no-interaction --prefer-dist; \
     fi
 
+# Install Node.js dependencies
+RUN bun install
+
 # Copy application files
 COPY . .
+
+# Build assets
+RUN bun run build
 
 # Set proper permissions
 RUN chown -R www-data:www-data /app
