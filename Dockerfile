@@ -4,9 +4,10 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-  git curl unzip zip \
+  git curl unzip zip ca-certificates \
   libpng-dev libjpeg-dev libfreetype6-dev \
   libonig-dev libxml2-dev libpq-dev libzip-dev libcurl4-openssl-dev libicu-dev default-mysql-client \
+  build-essential make gcc \
   && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -35,14 +36,10 @@ RUN curl -Ls https://github.com/ncopa/su-exec/archive/master.tar.gz | tar xz \
   && rm -rf su-exec-master
 
 # Copy composer and npm files and artisan
-COPY composer.json composer.lock* package.json artisan ./
+COPY composer.json package.json artisan ./
 
-# Install PHP dependencies
-RUN if [ -f composer.lock ]; then \
-      composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader; \
-    else \
-      composer install --no-dev --no-interaction --prefer-dist; \
-    fi
+# Install PHP dependencies (no scripts during build to avoid running artisan)
+RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts
 
 # Install Node.js dependencies
 RUN bun install
