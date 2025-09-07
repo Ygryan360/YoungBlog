@@ -25,7 +25,7 @@
     </div>
 
     @foreach ($comments as $comment)
-        <div class="mb-4">
+        <div wire:key="comment-{{ $comment['id'] }}" class="mb-8">
             <div class="flex items-center justify-between mb-2">
                 <div class="grid grid-cols-3 gap-2">
                     <div class="avatar">
@@ -46,7 +46,7 @@
                             <span class="text-sm text-base-content/60">
                                 {{ \Carbon\Carbon::parse($comment['created_at'])->diffForHumans() }}
                             </span>
-                            <button wire:click.prevent="toggleShowReplyForm"
+                            <button wire:click.prevent="toggleShowReplyForm({{ $comment['id'] }})"
                                 class="flex cursor-pointer items-baseline gap-1">
                                 <x-lucide-reply-all class="inline h-4 w-4" />
                                 <span class="hover:underline">
@@ -74,9 +74,9 @@
             </div>
 
             @if (!empty($comment['replies']))
-                <div class="mt-2 bg-base-200 p-4">
+                <div class="mt-2 p-4 border-l-2 border-primary">
                     @foreach ($comment['replies'] as $reply)
-                        <div class="pl-4 my-2">
+                        <div wire:key="reply-{{ $reply['id'] }}" class="pl-4 my-2">
                             <div class="flex gap-2 items-baseline">
                                 <h6 class="font-medium">
                                     {{ $reply['author']['name'] ?? 'Anonyme' }}
@@ -91,7 +91,7 @@
                     @endforeach
                 </div>
             @endif
-            @if ($showReplyForm)
+            @if ($replyTo === $comment['id'])
                 @auth
                     <div class="mt-4">
                         <form wire:submit.prevent="submit({{ $comment['id'] }})">

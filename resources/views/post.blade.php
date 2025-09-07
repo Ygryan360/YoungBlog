@@ -21,21 +21,22 @@
 @endsection
 
 @section('content')
-    <div class="mb-8 pb-4">
-        <h1 class="text-3xl font-bold mb-1 text-white">{{ $post->title }}</h1>
-        <p>Publié le <span class="text-white">{{ $post->created_at->format('d M Y') }}</span> par <span
-                class="text-white">{{ $post->author->name }}</span>
-        </p>
-    </div>
     <div class="flex justify-center mb-8">
         <div class="max-w-2xl">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2 text-white">{{ $post->title }}</h1>
+                <p>
+                    Publié le <span class="text-white">{{ $post->created_at->format('d M Y') }}</span> par <span
+                        class="text-white">{{ $post->author->name }}</span>
+                </p>
+            </div>
             @if ($post->image)
                 <img class="w-full h-auto mt-4" src="{{ $post->getImageUrl() }}" alt="{{ $post->title }}">
             @endif
-            <div class="my-8">
+            <div class="mt-8 mb-4">
                 <x-share-links :url="$post->route()" :title="$post->title" />
             </div>
-            <article class="post-content mb-8 py-6 px-4">
+            <article class="post-content mb-8 py-4 px-4">
                 {!! $post->parsedContent() !!}
             </article>
             <div class="my-8">
