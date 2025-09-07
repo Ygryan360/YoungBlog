@@ -46,13 +46,15 @@
                             <span class="text-sm text-base-content/60">
                                 {{ \Carbon\Carbon::parse($comment['created_at'])->diffForHumans() }}
                             </span>
-                            <button wire:click.prevent="toggleShowReplyForm({{ $comment['id'] }})"
-                                class="flex cursor-pointer items-baseline gap-1">
-                                <x-lucide-reply-all class="inline h-4 w-4" />
-                                <span class="hover:underline">
-                                    Répondre
-                                </span>
-                            </button>
+                            @auth
+                                <button wire:click.prevent="toggleShowReplyForm({{ $comment['id'] }})"
+                                    class="flex cursor-pointer items-baseline gap-1">
+                                    <x-lucide-reply-all class="inline h-4 w-4" />
+                                    <span class="hover:underline">
+                                        Répondre
+                                    </span>
+                                </button>
+                            @endauth
                         </div>
                     </div>
                 </div>

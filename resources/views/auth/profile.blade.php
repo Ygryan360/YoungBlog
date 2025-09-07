@@ -23,5 +23,11 @@
     </div>
     <div class="flex justify-center mb-8">
 
+        @auth
+            <livewire:profile-form />
+        @else
+            <div>Vous devez être connecté pour accéder à votre profil.</div>
+        @endauth
+
     </div>
 @endsection
