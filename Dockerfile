@@ -21,6 +21,15 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY --from=oven/bun:latest /usr/local/bin/bun /usr/bin/bun
 
+# Install su-exec
+RUN curl -Ls https://github.com/ncopa/su-exec/archive/master.tar.gz | tar xz \
+  && cd su-exec-master \
+  && make \
+  && mv su-exec /usr/local/bin/su-exec \
+  && chmod +x /usr/local/bin/su-exec \
+  && cd .. \
+  && rm -rf su-exec-master
+
 RUN chown -R www-data:www-data /app
 
 # Copy entrypoint script and make executable
