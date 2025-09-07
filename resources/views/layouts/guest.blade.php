@@ -17,14 +17,22 @@
         <div class="drawer-content bg-base-200">
             <div class="flex w-full justify-center p-4 min-h-screen">
                 <div class="container">
-                    <div class="flex flex-col-reverse lg:flex-row mb-2 justify-between">
+                    <div class="flex flex-col-reverse lg:flex-row mb-4 justify-between">
                         @yield('breadcrumbs')
-                        <div class="flex justify-end">
-                            <livewire:widgets.search />
-                            <label for="main-drawer" class="btn btn-ghost drawer-button lg:hidden">
-                                <x-lucide-menu class="h-7" />
-                            </label>
+
+                        <div class="flex items-center justify-between mb-4">
+                            <a href="/" class="lg:hidden" title="Retour à l'accueil">
+                                <img src="{{ asset('img/logo-ygr.png') }}" alt="YoungBlog Logo" class="h-10" />
+                            </a>
+
+                            <div class="flex">
+                                <livewire:widgets.search />
+                                <label for="main-drawer" class="btn btn-ghost drawer-button lg:hidden">
+                                    <x-lucide-menu class="h-7" />
+                                </label>
+                            </div>
                         </div>
+
                     </div>
                     @yield('content')
                 </div>
@@ -33,9 +41,9 @@
         </div>
         <div class="drawer-side">
             <label for="main-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="min-h-full  w-70 px-4 py-8 flex flex-col gap-4 justify-between">
+            <div class="min-h-screen bg-base-100 w-70 px-4 py-8 flex flex-col gap-4 justify-between">
                 <a href="/" title="Retour à l'accueil">
-                    <img src="{{ asset('img/logo.svg') }}" alt="YoungBlog Logo" class=" w-34 mx-auto">
+                    <x-logo class="w-34 mx-auto" />
                 </a>
                 <x-nav-links />
                 <x-social-links />
