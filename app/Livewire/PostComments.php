@@ -19,8 +19,6 @@ class PostComments extends Component
 
   public ?int $replyTo = null;
 
-  public bool $showReplyForm = false;
-
   protected $rules = [
     'newComment' => ['required', 'string', 'min:3', 'max:2000'],
   ];
@@ -93,9 +91,14 @@ class PostComments extends Component
     session()->flash('success', 'Commentaire supprimé.');
   }
 
-  public function toggleShowReplyForm()
+  public function toggleShowReplyForm($id)
   {
-    $this->showReplyForm = !$this->showReplyForm;
+    // show the reply form only for the selected comment
+    if ($this->replyTo === $id) {
+      $this->replyTo = null;
+    } else {
+      $this->replyTo = (int) $id;
+    }
   }
 
   public function render()

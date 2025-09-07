@@ -7,10 +7,13 @@ services:
         ports:
             - "8080:80"
         volumes:
-            - ./:/app:cached
+            - ./app:/app/app:cached
+            - ./config:/app/config:cached
+            - ./database:/app/database:cached
+            - ./public:/app/public:cached
+            - ./resources:/app/resources:cached
+            - ./routes:/app/routes:cached
             - storage_data:/app/storage
-        env_file:
-            - .env
         restart: unless-stopped
 
 volumes:

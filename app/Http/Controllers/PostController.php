@@ -30,24 +30,24 @@ class PostController extends Controller
 
     public function category(string $slug)
     {
-        return abort(404);
-        // $category = Category::where('slug', $slug)->firstOrFail();
-        // $posts = $category->posts()
-        //     ->published()
-        //     ->paginate(10);
-
-        // return view('category', compact('posts', 'category'));
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $posts = $category->posts()
+            ->published()
+            ->minimal()
+            ->paginate(10);
+        return view('category', compact('category', 'posts'));
     }
 
     public function tag(string $name)/** : View **/
     {
-        return abort(404);
-        // $tag = Tag::where('name', $name)->firstOrFail();
-        // $posts = $tag->posts()
-        //     ->published()
-        //     ->paginate(10);
+        $tag = Tag::where('name', $name)->firstOrFail();
 
-        // return view('tag', compact('posts', 'tag'));
+        $posts = $tag->posts()
+            ->minimal()
+            ->published()
+            ->paginate(10);
+
+        return view('tag', compact('posts', 'tag'));
     }
 
     public function newsletter(Request $request)

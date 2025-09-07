@@ -21,7 +21,7 @@
     </section>
     <section
         class="w-full md:w-1/2 h-screen bg-base-200 border-base-300 border p-4 flex flex-col items-center justify-center">
-        <a href="{{ route('home') }}"><img src="{{ asset('img/logo.svg') }}" alt="YoungBlog Logo" class="w-34 mb-8"></a>
+        <a href="{{ route('home') }}" title="Retour à l'accueil"><x-logo class="w-34 mb-8" /></a>
         <img src="{{ asset('img/sign-up.svg') }}" alt="Se connecter" class="w-1/2">
     </section>
 </body>

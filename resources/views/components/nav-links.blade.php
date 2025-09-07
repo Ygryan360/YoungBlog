@@ -19,4 +19,14 @@
                 class="justify-center">{{ $link['label'] }}</a>
         </li>
     @endforeach
+    @auth
+        <li>
+            <form method="POST" class="justify-center" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="text-center cursor-pointer">
+                    Déconnexion
+                </button>
+            </form>
+        </li>
+    @endauth
 </ul>

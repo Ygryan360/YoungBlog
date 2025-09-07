@@ -18,11 +18,11 @@
                 <span class="text-sm">{{ $post->created_at->format('d M Y') }}</span>
             </div>
         </div>
-        <a href="{{ $post->route() }}" class="card-title font-extrabold text-white text-2xl/7">
+        <a href="{{ $post->route() }}" class="card-title font-extrabold text-white my-2 text-2xl/7">
             {{ $post->title }}
         </a>
         <p class="text-base-content">{{ $post->description }}</p>
-        <div class="card-actions">
+        <div class="card-actions my-2">
             <x-lucide-tags class="h-6 text-primary inline-block mr-2" />
             @foreach ($post->tags->take(3) as $tag)
                 <span class="badge badge-outline">{{ $tag->name }}</span>

@@ -50,10 +50,9 @@
             <div class="w-30 flex">
                 <input type="number" class="input @error('captcha') input-error @enderror text-center w-full"
                     wire:model="captcha" placeholder="Réponse" />
-
             </div>
         </div>
-        <button type="submit" class="btn btn-primary w-full">Envoyer</button>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
         <x-flash-message>
             <x-lucide-mail-check class="h-4" />
         </x-flash-message>
