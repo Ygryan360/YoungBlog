@@ -4,8 +4,6 @@ services:
             context: .
             dockerfile: Dockerfile
         container_name: youngblog_app
-        ports:
-            - "8080:80"
         volumes:
             - ./app:/app/app:cached
             - ./config:/app/config:cached
