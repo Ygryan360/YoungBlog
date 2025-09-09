@@ -18,7 +18,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 RUN a2enmod rewrite
 
 # Copy Apache virtual host configuration
-COPY vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Copy composer from the composer image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -35,23 +35,44 @@ RUN curl -Ls https://github.com/ncopa/su-exec/archive/master.tar.gz | tar xz \
   && cd .. \
   && rm -rf su-exec-master
 
-# Copy composer and npm files and artisan
-COPY composer.json package.json artisan ./
+# Copy dependency files first (for better caching)
+COPY composer.json composer.lock* package.json ./
 
-# Install PHP dependencies (no scripts during build to avoid running artisan)
-RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts
+# Install PHP dependencies (exclude dev dependencies for production)
+RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts --no-autoloader
 
 # Install Node.js dependencies
-RUN bun install
+RUN bun install --frozen-lockfile
 
-# Copy application files
-COPY . .
+# Copy application files (excluding storage and vendor)
+COPY app ./app
+COPY bootstrap ./bootstrap
+COPY config ./config
+COPY database ./database
+COPY public ./public
+COPY resources ./resources
+COPY routes ./routes
+COPY artisan ./
+COPY .env.example ./.env
+
+# Generate autoloader
+RUN composer dump-autoload --no-dev --optimize
 
 # Build assets
 RUN bun run build
 
+# Create storage directories with proper structure
+RUN mkdir -p storage/app/public \
+  storage/framework/cache/data \
+  storage/framework/sessions \
+  storage/framework/views \
+  storage/logs \
+  bootstrap/cache
+
 # Set proper permissions
-RUN chown -R www-data:www-data /app
+RUN chown -R www-data:www-data /app \
+  && chmod -R 755 /app \
+  && chmod -R 775 storage bootstrap/cache
 
 # Copy entrypoint script and make executable
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -59,6 +80,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80
 
-# Use entrypoint to fix permissions at container start and run the default CMD
+# Use entrypoint
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-

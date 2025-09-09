@@ -1,24 +1,39 @@
-/.git
-/.github
-node_modules
-vendor
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/views/*
-storage/logs/*
-docker-compose.override.yml
+# Dependencies
+node_modules/
+vendor/
+
+# Storage and cache (will be mounted as volumes)
+storage/
+bootstrap/cache/
+
+# Development files
+.git/
+.gitignore
+README.md
+docker-compose.yml
+Dockerfile
+docker/
+
+# Environment files
+.env
 .env.local
 .env.testing
-tests
-*.log
-*.sql
-*.sqlite
-tmp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+public/build/
 public/hot
-public/storage
-**/.DS_Store
-/.idea
-/.vscode
-coverage
-dist
-README.md
+
+# Testing
+tests/
+phpunit.xml
+.phpunit.result.cache

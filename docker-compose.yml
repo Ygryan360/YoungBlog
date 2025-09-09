@@ -1,20 +1,26 @@
+version: "3.8"
+
 services:
     app:
         build:
             context: .
             dockerfile: Dockerfile
         container_name: youngblog_app
-        # ports:
-        #     - "8000:80"
+        ports:
+            - "8000:80"
         volumes:
-            - ./app:/app/app:cached
-            - ./config:/app/config:cached
-            - ./database:/app/database:cached
-            - ./public:/app/public:cached
-            - ./resources:/app/resources:cached
-            - ./routes:/app/routes:cached
+            # Mount storage as named volume for persistence
             - storage_data:/app/storage
+        environment:
+            - APP_ENV=production
+            - APP_DEBUG=false
         restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost/"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
 
 volumes:
     storage_data:
+        driver: local
