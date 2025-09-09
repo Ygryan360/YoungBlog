@@ -18,7 +18,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 RUN a2enmod rewrite
 
 # Copy Apache virtual host configuration
-COPY docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Copy composer from the composer image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -75,7 +75,7 @@ RUN chown -R www-data:www-data /app \
   && chmod -R 775 storage bootstrap/cache
 
 # Copy entrypoint script and make executable
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80
