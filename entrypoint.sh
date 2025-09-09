@@ -43,10 +43,10 @@ if [ ! -d /app/node_modules ] || [ ! -f /app/public/build/manifest.json ]; then
         fi
     fi
 fi
-if ! grep -q "APP_KEY=" /app/.env || grep -q "APP_KEY=$" /app/.env; then
-    echo "Generating application key..."
-    php /app/artisan key:generate --force
-fi
+# if ! grep -q "APP_KEY=" /app/.env || grep -q "APP_KEY=$" /app/.env; then
+#     echo "Generating application key..."
+#     php /app/artisan key:generate --force
+# fi
 
 # Clear and cache configurations for production
 echo "Optimizing Laravel for production..."
