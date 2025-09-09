@@ -35,16 +35,16 @@ RUN curl -Ls https://github.com/ncopa/su-exec/archive/master.tar.gz | tar xz \
   && cd .. \
   && rm -rf su-exec-master
 
-# Copy dependency files first (for better caching)
+# Copy dependency files first
 COPY composer.json composer.lock* package.json ./
 
-# Install PHP dependencies (exclude dev dependencies for production)
-RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts --no-autoloader
+# Install PHP dependencies WITHOUT scripts to avoid bootstrap/cache requirement
+RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts
 
 # Install Node.js dependencies
 RUN bun install --frozen-lockfile
 
-# Copy application files (excluding storage and vendor)
+# Copy application files
 COPY app ./app
 COPY bootstrap ./bootstrap
 COPY config ./config
@@ -55,21 +55,23 @@ COPY routes ./routes
 COPY artisan ./
 COPY .env.example ./.env
 
-# Generate autoloader
-RUN composer dump-autoload --no-dev --optimize
-
-# Build assets
-RUN bun run build
-
-# Create storage directories with proper structure
+# Create all necessary directories BEFORE any Laravel commands
 RUN mkdir -p storage/app/public \
   storage/framework/cache/data \
   storage/framework/sessions \
   storage/framework/views \
   storage/logs \
-  bootstrap/cache
+  bootstrap/cache \
+  && chown -R www-data:www-data bootstrap/cache storage \
+  && chmod -R 775 bootstrap/cache storage
 
-# Set proper permissions
+# NOW run the autoloader optimization (bootstrap/cache exists)
+RUN composer dump-autoload --no-dev --optimize
+
+# Build assets
+RUN bun run build
+
+# Final ownership and permissions
 RUN chown -R www-data:www-data /app \
   && chmod -R 755 /app \
   && chmod -R 775 storage bootstrap/cache
